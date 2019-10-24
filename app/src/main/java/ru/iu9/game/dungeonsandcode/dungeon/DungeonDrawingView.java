@@ -1,12 +1,17 @@
 package ru.iu9.game.dungeonsandcode.dungeon;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
+
+import ru.iu9.game.dungeonsandcode.R;
 
 public class DungeonDrawingView extends View {
 
@@ -18,6 +23,8 @@ public class DungeonDrawingView extends View {
     private ArrayList<DungeonPart> mDungeonParts = null;
     private Paint mDungeonPartPaint;
     private Paint mBackgroundPaint;
+    private Paint mBorderPaint;
+    private Bitmap mMainCharacterImage;
 
     public DungeonDrawingView(Context context) {
         this(context, null);
@@ -31,6 +38,11 @@ public class DungeonDrawingView extends View {
 
         mBackgroundPaint = new Paint();
         mBackgroundPaint.setColor(0xfff8efe0);
+
+        mBorderPaint = new Paint();
+        mBorderPaint.setColor(Color.BLACK);
+
+        mMainCharacterImage = BitmapFactory.decodeResource(getResources(), R.drawable.main_character);
     }
 
     @Override
@@ -45,7 +57,13 @@ public class DungeonDrawingView extends View {
         canvas.drawPaint(mBackgroundPaint);
 
         for (DungeonPart part : mDungeonParts) {
+            Bitmap image = Bitmap.createScaledBitmap(mMainCharacterImage, part.getRight() - part.getLeft(), part.getRight() - part.getLeft(), false);
+            canvas.drawBitmap(image, part.getLeft(), part.getTop(), null);
             canvas.drawRect(part.getLeft(), part.getTop(), part.getRight(), part.getBottom(), mDungeonPartPaint);
+            canvas.drawLine(part.getLeft(), part.getTop(), part.getRight(), part.getTop(), mBorderPaint);
+            canvas.drawLine(part.getLeft(), part.getTop(), part.getLeft(), part.getBottom(), mBorderPaint);
+            canvas.drawLine(part.getLeft(), part.getBottom(), part.getRight(), part.getBottom(), mBorderPaint);
+            canvas.drawLine(part.getRight(), part.getTop(), part.getRight(), part.getBottom(), mBorderPaint);
         }
     }
 
