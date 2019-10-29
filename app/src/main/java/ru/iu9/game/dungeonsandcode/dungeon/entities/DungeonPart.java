@@ -11,13 +11,17 @@ abstract class DungeonPart {
     int mRight;
     int mBottom;
 
-    private Bitmap mBackgroundImage;
+    Bitmap mBackgroundImage;
 
-    DungeonPart(int left, int top, int right, int bottom, Resources resources) {
+    DungeonPart(int left, int top, int right, int bottom) {
         mLeft = left;
         mTop = top;
         mRight = right;
         mBottom = bottom;
+    }
+
+    DungeonPart(int left, int top, int right, int bottom, Resources resources) {
+        this(left, top, right, bottom);
         mBackgroundImage = createBackgroundImage(resources);
     }
 

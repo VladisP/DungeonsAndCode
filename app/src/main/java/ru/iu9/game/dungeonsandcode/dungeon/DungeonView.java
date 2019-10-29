@@ -73,6 +73,18 @@ public class DungeonView extends View {
 
         Floor[][] floors = new Floor[FLOORS_ROW_COUNT][FLOORS_ROW_COUNT];
 
+        //TODO: delete this array later...
+        boolean[][] isWalls = {
+                {false, false, true, true, true, true, true, true}
+                , {true, true, false, false, false, false, false, true}
+                , {false, false, false, false, true, true, false, true}
+                , {false, true, true, true, true, true, false, true}
+                , {false, true, false, false, false, true, false, true}
+                , {false, true, false, false, false, false, true, true}
+                , {false, true, false, false, false, false, true, true}
+                , {false, true, false, false, false, false, true, true}
+        };
+
         for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
 
             for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
@@ -83,6 +95,7 @@ public class DungeonView extends View {
                         , coordXValue + floorSize
                         , coordYValue + floorSize
                         , getResources()
+                        , isWalls[i][j]
                 );
                 coordXValue += floorSize;
             }
