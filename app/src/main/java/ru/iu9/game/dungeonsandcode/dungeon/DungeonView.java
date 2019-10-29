@@ -11,6 +11,7 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.PositionPair;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
 
 public class DungeonView extends View {
 
@@ -21,6 +22,7 @@ public class DungeonView extends View {
 
     private Floor[][] mFloors;
     private Hero mHero;
+    private Treasure mTreasure;
     private Bitmap mBackgroundImage;
 
     public DungeonView(Context context) {
@@ -38,12 +40,14 @@ public class DungeonView extends View {
         mFloors = createFloors(Math.min(getHeight(), getWidth()));
         mBackgroundImage = createBackgroundImage(getWidth(), getHeight());
         mHero = createHero();
+        mTreasure = createTreasure();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(mBackgroundImage, 0, 0, null);
         drawFloors(canvas);
+        mTreasure.draw(canvas);
         mHero.draw(canvas);
     }
 
@@ -96,6 +100,18 @@ public class DungeonView extends View {
                 , startFloor.getBottom()
                 , getResources()
                 , new PositionPair(FLOORS_ROW_COUNT - 1, 0)
+        );
+    }
+
+    private Treasure createTreasure() {
+        Floor startFloor = mFloors[4][6];
+
+        return new Treasure(
+                startFloor.getLeft()
+                , startFloor.getTop()
+                , startFloor.getRight()
+                , startFloor.getBottom()
+                , getResources()
         );
     }
 
