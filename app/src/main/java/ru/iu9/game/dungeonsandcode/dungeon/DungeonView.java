@@ -10,6 +10,7 @@ import android.view.View;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Monster;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.PositionPair;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
 
@@ -23,6 +24,7 @@ public class DungeonView extends View {
     private Floor[][] mFloors;
     private Hero mHero;
     private Treasure mTreasure;
+    private Monster mMonster;
     private Bitmap mBackgroundImage;
 
     public DungeonView(Context context) {
@@ -41,6 +43,7 @@ public class DungeonView extends View {
         mBackgroundImage = createBackgroundImage(getWidth(), getHeight());
         mHero = createHero();
         mTreasure = createTreasure();
+        mMonster = createMonster();
     }
 
     @Override
@@ -48,6 +51,7 @@ public class DungeonView extends View {
         canvas.drawBitmap(mBackgroundImage, 0, 0, null);
         drawFloors(canvas);
         mTreasure.draw(canvas);
+        mMonster.draw(canvas);
         mHero.draw(canvas);
     }
 
@@ -107,6 +111,18 @@ public class DungeonView extends View {
         Floor startFloor = mFloors[4][6];
 
         return new Treasure(
+                startFloor.getLeft()
+                , startFloor.getTop()
+                , startFloor.getRight()
+                , startFloor.getBottom()
+                , getResources()
+        );
+    }
+
+    private Monster createMonster() {
+        Floor startFloor = mFloors[2][3];
+
+        return new Monster(
                 startFloor.getLeft()
                 , startFloor.getTop()
                 , startFloor.getRight()
