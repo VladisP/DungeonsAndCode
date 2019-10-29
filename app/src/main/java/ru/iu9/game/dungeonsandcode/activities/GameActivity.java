@@ -10,7 +10,7 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.CodeFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements CodeFragment.OnCodeBtnListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +37,45 @@ public class GameActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(containerId, fragment)
                 .commit();
+    }
+
+    @Override
+    public void goUp() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.moveHeroUp();
+        }
+    }
+
+    @Override
+    public void goLeft() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.moveHeroLeft();
+        }
+    }
+
+    @Override
+    public void goRight() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.moveHeroRight();
+        }
+    }
+
+    @Override
+    public void goDown() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.moveHeroDown();
+        }
     }
 }

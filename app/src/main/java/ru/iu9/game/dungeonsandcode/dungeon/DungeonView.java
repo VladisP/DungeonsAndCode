@@ -8,8 +8,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.PositionPair;
 
-public class DungeonDrawingView extends View {
+public class DungeonView extends View {
 
     private static final String LOG_TAG = "DnC_Log_Tag";
 
@@ -20,11 +23,11 @@ public class DungeonDrawingView extends View {
     private Hero mHero;
     private Bitmap mBackgroundImage;
 
-    public DungeonDrawingView(Context context) {
+    public DungeonView(Context context) {
         this(context, null);
     }
 
-    public DungeonDrawingView(Context context, AttributeSet attrs) {
+    public DungeonView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -92,6 +95,7 @@ public class DungeonDrawingView extends View {
                 , startFloor.getRight()
                 , startFloor.getBottom()
                 , getResources()
+                , new PositionPair(FLOORS_ROW_COUNT - 1, 0)
         );
     }
 
@@ -101,5 +105,25 @@ public class DungeonDrawingView extends View {
                 mFloors[i][j].draw(canvas);
             }
         }
+    }
+
+    public void moveHeroUp() {
+        mHero.moveUp(mFloors);
+        invalidate();
+    }
+
+    public void moveHeroLeft() {
+        mHero.moveLeft(mFloors);
+        invalidate();
+    }
+
+    public void moveHeroRight() {
+        mHero.moveRight(mFloors);
+        invalidate();
+    }
+
+    public void moveHeroDown() {
+        mHero.moveDown(mFloors);
+        invalidate();
     }
 }

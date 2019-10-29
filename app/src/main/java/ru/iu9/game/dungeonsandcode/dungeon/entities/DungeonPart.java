@@ -1,4 +1,4 @@
-package ru.iu9.game.dungeonsandcode.dungeon;
+package ru.iu9.game.dungeonsandcode.dungeon.entities;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -6,10 +6,10 @@ import android.graphics.Canvas;
 
 abstract class DungeonPart {
 
-    private int mLeft;
-    private int mTop;
-    private int mRight;
-    private int mBottom;
+    int mLeft;
+    int mTop;
+    int mRight;
+    int mBottom;
 
     private Bitmap mBackgroundImage;
 
@@ -21,25 +21,25 @@ abstract class DungeonPart {
         mBackgroundImage = createBackgroundImage(resources);
     }
 
-    int getLeft() {
+    public int getLeft() {
         return mLeft;
     }
 
-    int getTop() {
+    public int getTop() {
         return mTop;
     }
 
-    int getRight() {
+    public int getRight() {
         return mRight;
     }
 
-    int getBottom() {
+    public int getBottom() {
         return mBottom;
     }
 
     protected abstract Bitmap createBackgroundImage(Resources resources);
 
-    void draw(Canvas canvas) {
+    public void draw(Canvas canvas) {
         canvas.drawBitmap(mBackgroundImage, mLeft, mTop, null);
     }
 }

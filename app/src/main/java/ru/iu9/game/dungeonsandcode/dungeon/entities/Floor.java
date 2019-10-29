@@ -1,4 +1,4 @@
-package ru.iu9.game.dungeonsandcode.dungeon;
+package ru.iu9.game.dungeonsandcode.dungeon.entities;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,7 +8,7 @@ import ru.iu9.game.dungeonsandcode.R;
 
 public class Floor extends DungeonPart {
 
-    Floor(int left, int top, int right, int bottom, Resources resources) {
+    public Floor(int left, int top, int right, int bottom, Resources resources) {
         super(left, top, right, bottom, resources);
     }
 
@@ -16,8 +16,8 @@ public class Floor extends DungeonPart {
     protected Bitmap createBackgroundImage(Resources resources) {
         return Bitmap.createScaledBitmap(
                 BitmapFactory.decodeResource(resources, R.drawable.rect_floor)
-                , getRight() - getLeft()
-                , getBottom() - getTop()
+                , mRight - mLeft
+                , mBottom - mTop
                 , false
         );
     }
