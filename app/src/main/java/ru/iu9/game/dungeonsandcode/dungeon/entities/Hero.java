@@ -28,7 +28,7 @@ public class Hero extends DungeonPart {
     public void moveUp(Floor[][] floors) {
         int rowPosition = mPositionPair.getRowPosition();
 
-        if (rowPosition == 0) {
+        if (rowPosition == 0 || floors[rowPosition - 1][mPositionPair.getColumnPosition()].isWall()) {
             return;
         }
 
@@ -39,7 +39,7 @@ public class Hero extends DungeonPart {
     public void moveLeft(Floor[][] floors) {
         int columnPosition = mPositionPair.getColumnPosition();
 
-        if (columnPosition == 0) {
+        if (columnPosition == 0 || floors[mPositionPair.getRowPosition()][columnPosition - 1].isWall()) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class Hero extends DungeonPart {
     public void moveRight(Floor[][] floors) {
         int columnPosition = mPositionPair.getColumnPosition();
 
-        if (columnPosition == floors.length - 1) {
+        if (columnPosition == floors.length - 1 || floors[mPositionPair.getRowPosition()][columnPosition + 1].isWall()) {
             return;
         }
 
@@ -61,7 +61,7 @@ public class Hero extends DungeonPart {
     public void moveDown(Floor[][] floors) {
         int rowPosition = mPositionPair.getRowPosition();
 
-        if (rowPosition == floors.length - 1) {
+        if (rowPosition == floors.length - 1 || floors[rowPosition + 1][mPositionPair.getColumnPosition()].isWall()) {
             return;
         }
 

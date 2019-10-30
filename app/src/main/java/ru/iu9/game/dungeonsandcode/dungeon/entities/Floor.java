@@ -27,4 +27,8 @@ public class Floor extends DungeonPart {
                 , false
         );
     }
+
+    boolean isWall() {
+        return mIsWall;
+    }
 }
