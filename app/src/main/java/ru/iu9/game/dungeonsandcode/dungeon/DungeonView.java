@@ -12,6 +12,8 @@ import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Monster;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.PositionPair;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.TrapType;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
 
 public class DungeonView extends View {
@@ -25,6 +27,7 @@ public class DungeonView extends View {
     private Hero mHero;
     private Treasure mTreasure;
     private Monster mMonster;
+    private Trap mTrap;
     private Bitmap mBackgroundImage;
 
     public DungeonView(Context context) {
@@ -44,6 +47,7 @@ public class DungeonView extends View {
         mHero = createHero();
         mTreasure = createTreasure();
         mMonster = createMonster();
+        mTrap = createTrap();
     }
 
     @Override
@@ -52,6 +56,7 @@ public class DungeonView extends View {
         drawFloors(canvas);
         mTreasure.draw(canvas);
         mMonster.draw(canvas);
+        mTrap.draw(canvas);
         mHero.draw(canvas);
     }
 
@@ -141,6 +146,19 @@ public class DungeonView extends View {
                 , startFloor.getRight()
                 , startFloor.getBottom()
                 , getResources()
+        );
+    }
+
+    private Trap createTrap() {
+        Floor startFloor = mFloors[2][6];
+
+        return new Trap(
+                startFloor.getLeft()
+                , startFloor.getTop()
+                , startFloor.getRight()
+                , startFloor.getBottom()
+                , getResources()
+                , TrapType.LEFT
         );
     }
 
