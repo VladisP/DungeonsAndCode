@@ -1,4 +1,4 @@
-package ru.iu9.game.dungeonsandcode.dungeon.entities;
+package ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities;
 
 public class PositionPair {
 
@@ -10,19 +10,19 @@ public class PositionPair {
         mColumnPosition = columnPosition;
     }
 
-    int getRowPosition() {
+    public int getRowPosition() {
         return mRowPosition;
     }
 
-    void setRowPosition(int rowPosition) {
+    public void setRowPosition(int rowPosition) {
         mRowPosition = rowPosition;
     }
 
-    int getColumnPosition() {
+    public int getColumnPosition() {
         return mColumnPosition;
     }
 
-    void setColumnPosition(int columnPosition) {
+    public void setColumnPosition(int columnPosition) {
         mColumnPosition = columnPosition;
     }
 }

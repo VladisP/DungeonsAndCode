@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
 public class Trap extends DungeonPart {
 

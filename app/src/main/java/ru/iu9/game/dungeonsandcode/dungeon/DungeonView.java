@@ -11,9 +11,9 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Monster;
-import ru.iu9.game.dungeonsandcode.dungeon.entities.PositionPair;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
-import ru.iu9.game.dungeonsandcode.dungeon.entities.TrapType;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
 
 public class DungeonView extends View {
