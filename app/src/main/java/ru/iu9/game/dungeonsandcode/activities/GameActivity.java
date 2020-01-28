@@ -6,16 +6,24 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import ru.iu9.game.dungeonsandcode.DncApplication;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.CodeFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
+import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
+import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 
 public class GameActivity extends AppCompatActivity implements CodeFragment.OnCodeBtnListener {
+
+    private DungeonConfig mDungeonConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        String json = DncApplication.from(this).getJsonRepo().getJsonByIndex(0);
+        mDungeonConfig = DungeonGenerator.generateConfig(this, json);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment dungeonFragment = fragmentManager.findFragmentById(R.id.dungeon_fragment_container);
@@ -37,6 +45,10 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.OnCo
                 .beginTransaction()
                 .add(containerId, fragment)
                 .commit();
+    }
+
+    public DungeonConfig getDungeonConfig() {
+        return mDungeonConfig;
     }
 
     @Override

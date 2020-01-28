@@ -1,0 +1,147 @@
+{
+  "heroPosition": {
+    "rowPosition": 7,
+    "columnPosition": 0
+  },
+  "treasurePosition": {
+    "rowPosition": 4,
+    "columnPosition": 6
+  },
+  "monstersPosition": [
+    {
+      "rowPosition": 2,
+      "columnPosition": 3
+    }
+  ],
+  "wallsPosition": [
+    {
+      "rowPosition": 0,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 3
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 5
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 6
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 1,
+      "columnPosition": 0
+    },
+    {
+      "rowPosition": 1,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 1,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 2,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 2,
+      "columnPosition": 5
+    },
+    {
+      "rowPosition": 2,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 3
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 5
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 4,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 4,
+      "columnPosition": 5
+    },
+    {
+      "rowPosition": 4,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 5,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 5,
+      "columnPosition": 6
+    },
+    {
+      "rowPosition": 5,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 6,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 6,
+      "columnPosition": 6
+    },
+    {
+      "rowPosition": 6,
+      "columnPosition": 7
+    },
+    {
+      "rowPosition": 7,
+      "columnPosition": 1
+    },
+    {
+      "rowPosition": 7,
+      "columnPosition": 6
+    },
+    {
+      "rowPosition": 7,
+      "columnPosition": 7
+    }
+  ],
+  "trapConfigs": [
+    {
+      "trapType": 0,
+      "trapPosition": {
+        "rowPosition": 2,
+        "columnPosition": 6
+      }
+    }
+  ]
+}

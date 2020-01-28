@@ -2,27 +2,27 @@ package ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities;
 
 public class PositionPair {
 
-    private int mRowPosition;
-    private int mColumnPosition;
+    private int rowPosition;
+    private int columnPosition;
 
     public PositionPair(int rowPosition, int columnPosition) {
-        mRowPosition = rowPosition;
-        mColumnPosition = columnPosition;
+        this.rowPosition = rowPosition;
+        this.columnPosition = columnPosition;
     }
 
     public int getRowPosition() {
-        return mRowPosition;
+        return rowPosition;
     }
 
     public void setRowPosition(int rowPosition) {
-        mRowPosition = rowPosition;
+        this.rowPosition = rowPosition;
     }
 
     public int getColumnPosition() {
-        return mColumnPosition;
+        return columnPosition;
     }
 
     public void setColumnPosition(int columnPosition) {
-        mColumnPosition = columnPosition;
+        this.columnPosition = columnPosition;
     }
 }
