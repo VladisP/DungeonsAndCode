@@ -115,6 +115,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
             CodeEditor codeEditor = (CodeEditor) adapter;
             codeEditor.addCodeLine(codeLine);
             adapter.notifyItemInserted(adapter.getItemCount() - 1);
+            mCodeList.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
     }
 
