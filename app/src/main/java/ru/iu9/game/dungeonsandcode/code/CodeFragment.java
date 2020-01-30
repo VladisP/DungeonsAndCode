@@ -17,6 +17,7 @@ import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
+import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 
 public class CodeFragment extends Fragment {
@@ -48,17 +49,30 @@ public class CodeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        RecyclerView recyclerView = view.findViewById(R.id.command_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommandAdapter((Context) mCodeBtnListener, mCommandListItems));
+        initCommandList(view);
+        initCodeList(view);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mCodeBtnListener = null;
+    }
+
+    private void initCommandList(View view) {
+        RecyclerView commandList = view.findViewById(R.id.command_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+
+        commandList.setLayoutManager(layoutManager);
+        commandList.setAdapter(new CommandAdapter(getContext(), mCommandListItems));
+    }
+
+    private void initCodeList(View view) {
+        RecyclerView codeList = view.findViewById(R.id.code_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        codeList.setLayoutManager(layoutManager);
+        codeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<String>()));
     }
 
     private void createCommandListItems() {
