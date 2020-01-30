@@ -34,7 +34,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> implements Cod
     @Override
     public void onBindViewHolder(@NonNull CodeHolder holder, int position) {
         String codeLine = mCodeLines.get(position);
-        holder.bind(codeLine);
+        holder.bind(codeLine, position);
     }
 
     @Override

@@ -83,19 +83,19 @@ public class CodeFragment extends Fragment implements CodeEditor {
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_move_black_24dp,
-                        "move();"
+                        "move()"
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_left_black_24dp,
-                        "turnLeft();"
+                        "turnLeft()"
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_right_black_24dp,
-                        "turnRight();"
+                        "turnRight()"
                 )
         );
     }
