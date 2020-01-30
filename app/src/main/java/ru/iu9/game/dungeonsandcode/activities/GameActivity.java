@@ -13,7 +13,7 @@ import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 
-public class GameActivity extends AppCompatActivity implements CodeFragment.OnCodeBtnListener {
+public class GameActivity extends AppCompatActivity implements CodeFragment.HeroMoveListener {
 
     private DungeonConfig mDungeonConfig;
 
@@ -52,7 +52,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.OnCo
     }
 
     @Override
-    public void goUp() {
+    public void moveUp() {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -62,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.OnCo
     }
 
     @Override
-    public void goLeft() {
+    public void moveLeft() {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -72,7 +72,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.OnCo
     }
 
     @Override
-    public void goRight() {
+    public void moveRight() {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.OnCo
     }
 
     @Override
-    public void goDown() {
+    public void moveDown() {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 

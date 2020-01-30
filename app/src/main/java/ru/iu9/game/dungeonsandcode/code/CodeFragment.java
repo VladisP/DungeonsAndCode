@@ -23,7 +23,7 @@ import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 
 public class CodeFragment extends Fragment implements CodeEditor {
 
-    private OnCodeBtnListener mCodeBtnListener;
+    private HeroMoveListener mHeroMoveListener;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
 
@@ -34,7 +34,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mCodeBtnListener = (OnCodeBtnListener) context;
+        mHeroMoveListener = (HeroMoveListener) context;
     }
 
     @Override
@@ -60,12 +60,19 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 removeLastLine();
             }
         });
+
+        view.findViewById(R.id.run_program_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                runProgram();
+            }
+        });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCodeBtnListener = null;
+        mHeroMoveListener = null;
     }
 
     private void initCommandList(View view) {
@@ -109,34 +116,41 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
     @Override
     public void addCodeLine(String codeLine) {
-        RecyclerView.Adapter adapter = mCodeList.getAdapter();
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (adapter != null) {
-            CodeEditor codeEditor = (CodeEditor) adapter;
-            codeEditor.addCodeLine(codeLine);
-            adapter.notifyItemInserted(adapter.getItemCount() - 1);
-            mCodeList.smoothScrollToPosition(adapter.getItemCount() - 1);
+        if (codeAdapter != null) {
+            codeAdapter.addCodeLine(codeLine);
+            codeAdapter.notifyItemInserted(codeAdapter.getItemCount() - 1);
+            mCodeList.smoothScrollToPosition(codeAdapter.getItemCount() - 1);
         }
     }
 
     @Override
     public void removeLastLine() {
-        RecyclerView.Adapter adapter = mCodeList.getAdapter();
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (adapter != null && adapter.getItemCount() > 0) {
-            CodeEditor codeEditor = (CodeEditor) adapter;
-            codeEditor.removeLastLine();
-            adapter.notifyItemRemoved(adapter.getItemCount());
+        if (codeAdapter != null && codeAdapter.getItemCount() > 0) {
+            codeAdapter.removeLastLine();
+            codeAdapter.notifyItemRemoved(codeAdapter.getItemCount());
         }
     }
 
-    public interface OnCodeBtnListener {
-        void goUp();
+    @Override
+    public void runProgram() {
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        void goLeft();
+        if (codeAdapter != null) {
+            Interpreter.run(codeAdapter.getProgram(), mHeroMoveListener);
+        }
+    }
 
-        void goRight();
+    public interface HeroMoveListener {
+        void moveUp();
 
-        void goDown();
+        void moveLeft();
+
+        void moveRight();
+
+        void moveDown();
     }
 }

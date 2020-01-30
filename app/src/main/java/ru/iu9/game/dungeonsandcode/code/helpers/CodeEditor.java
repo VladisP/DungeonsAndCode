@@ -4,4 +4,6 @@ public interface CodeEditor {
     void addCodeLine(String codeLine);
 
     void removeLastLine();
+
+    void runProgram();
 }
