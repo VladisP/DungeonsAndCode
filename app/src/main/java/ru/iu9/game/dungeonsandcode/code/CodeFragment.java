@@ -53,6 +53,13 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initCommandList(view);
         initCodeList(view);
+
+        view.findViewById(R.id.remove_line_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeLastLine();
+            }
+        });
     }
 
     @Override
@@ -107,7 +114,18 @@ public class CodeFragment extends Fragment implements CodeEditor {
         if (adapter != null) {
             CodeEditor codeEditor = (CodeEditor) adapter;
             codeEditor.addCodeLine(codeLine);
-            adapter.notifyItemInserted(adapter.getItemCount());
+            adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        }
+    }
+
+    @Override
+    public void removeLastLine() {
+        RecyclerView.Adapter adapter = mCodeList.getAdapter();
+
+        if (adapter != null && adapter.getItemCount() > 0) {
+            CodeEditor codeEditor = (CodeEditor) adapter;
+            codeEditor.removeLastLine();
+            adapter.notifyItemRemoved(adapter.getItemCount());
         }
     }
 

@@ -46,4 +46,9 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> implements Cod
     public void addCodeLine(String codeLine) {
         mCodeLines.add(codeLine);
     }
+
+    @Override
+    public void removeLastLine() {
+        mCodeLines.remove(mCodeLines.size() - 1);
+    }
 }

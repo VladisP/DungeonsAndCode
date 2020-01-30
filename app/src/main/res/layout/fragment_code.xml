@@ -19,10 +19,11 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/remove_line_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_refresh_line_24dp" />
+                android:src="@drawable/ic_remove_line_24dp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
