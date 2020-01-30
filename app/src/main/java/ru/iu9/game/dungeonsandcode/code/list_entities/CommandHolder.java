@@ -7,17 +7,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
-import ru.iu9.game.dungeonsandcode.log.Logger;
 
 public class CommandHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private ImageButton mCommandImageButton;
+    private CodeEditor mCodeEditor;
     private CommandListItem mCommandListItem;
 
-    CommandHolder(@NonNull View itemView) {
+    CommandHolder(@NonNull View itemView, CodeEditor codeEditor) {
         super(itemView);
         mCommandImageButton = itemView.findViewById(R.id.command_image_button);
+        mCodeEditor = codeEditor;
         mCommandImageButton.setOnClickListener(this);
     }
 
@@ -28,7 +30,6 @@ public class CommandHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        //TODO: add later...
-        Logger.log(mCommandListItem.getCommandText());
+        mCodeEditor.addCodeLine(mCommandListItem.getCommandText());
     }
 }

@@ -16,13 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 
-public class CodeFragment extends Fragment {
+public class CodeFragment extends Fragment implements CodeEditor {
 
     private OnCodeBtnListener mCodeBtnListener;
+    private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
 
     public static CodeFragment newInstance() {
@@ -64,15 +66,15 @@ public class CodeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
 
         commandList.setLayoutManager(layoutManager);
-        commandList.setAdapter(new CommandAdapter(getContext(), mCommandListItems));
+        commandList.setAdapter(new CommandAdapter(getContext(), this, mCommandListItems));
     }
 
     private void initCodeList(View view) {
-        RecyclerView codeList = view.findViewById(R.id.code_list);
+        mCodeList = view.findViewById(R.id.code_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-        codeList.setLayoutManager(layoutManager);
-        codeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<String>()));
+        mCodeList.setLayoutManager(layoutManager);
+        mCodeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<String>()));
     }
 
     private void createCommandListItems() {
@@ -96,6 +98,17 @@ public class CodeFragment extends Fragment {
                         "turnRight();"
                 )
         );
+    }
+
+    @Override
+    public void addCodeLine(String codeLine) {
+        RecyclerView.Adapter adapter = mCodeList.getAdapter();
+
+        if (adapter != null) {
+            CodeEditor codeEditor = (CodeEditor) adapter;
+            codeEditor.addCodeLine(codeLine);
+            adapter.notifyItemInserted(adapter.getItemCount());
+        }
     }
 
     public interface OnCodeBtnListener {

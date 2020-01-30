@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 
-public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
+public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> implements CodeEditor {
 
     private Context mContext;
     private List<String> mCodeLines;
@@ -39,5 +40,10 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
     @Override
     public int getItemCount() {
         return mCodeLines.size();
+    }
+
+    @Override
+    public void addCodeLine(String codeLine) {
+        mCodeLines.add(codeLine);
     }
 }
