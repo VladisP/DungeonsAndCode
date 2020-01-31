@@ -216,22 +216,42 @@ public class DungeonView extends View {
     }
 
     public void moveHeroUp() {
-        mHero.moveUp(mFloors);
-        invalidate();
+        mHero.moveUp(mFloors, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
     public void moveHeroLeft() {
-        mHero.moveLeft(mFloors);
-        invalidate();
+        mHero.moveLeft(mFloors, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
     public void moveHeroRight() {
-        mHero.moveRight(mFloors);
-        invalidate();
+        mHero.moveRight(mFloors, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
     public void moveHeroDown() {
-        mHero.moveDown(mFloors);
-        invalidate();
+        mHero.moveDown(mFloors, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
+    }
+
+    public interface HeroMoveAction {
+        void moveCallback();
     }
 }

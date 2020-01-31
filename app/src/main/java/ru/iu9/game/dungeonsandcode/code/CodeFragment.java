@@ -68,6 +68,34 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 runProgram();
             }
         });
+
+        view.findViewById(R.id.temp_up_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHeroMoveListener.moveUp();
+            }
+        });
+
+        view.findViewById(R.id.temp_down_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHeroMoveListener.moveDown();
+            }
+        });
+
+        view.findViewById(R.id.temp_left_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHeroMoveListener.moveLeft();
+            }
+        });
+
+        view.findViewById(R.id.temp_right_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHeroMoveListener.moveRight();
+            }
+        });
     }
 
     @Override
