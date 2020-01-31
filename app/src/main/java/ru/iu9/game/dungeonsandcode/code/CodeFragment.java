@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
@@ -89,6 +90,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
         mCodeList.setLayoutManager(layoutManager);
         mCodeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<String>()));
+        Objects.requireNonNull(mCodeList.getItemAnimator()).setRemoveDuration(0L);
     }
 
     private void createCommandListItems() {
