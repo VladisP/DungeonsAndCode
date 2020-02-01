@@ -19,6 +19,7 @@ import java.util.Objects;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
+import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 
@@ -156,5 +157,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
         void moveRight(HeroMoveAction onMoveEndAction);
 
         void moveDown(HeroMoveAction onMoveEndAction);
+
+        void changeDirection(HeroDirection heroDirection);
     }
 }

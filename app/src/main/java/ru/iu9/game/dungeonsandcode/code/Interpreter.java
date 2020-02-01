@@ -29,11 +29,11 @@ class Interpreter {
                 });
                 break;
             case COMMAND_TURN_LEFT:
-                turnLeft();
+                turnLeft(heroMoveListener);
                 onCommandEndAction(program, heroMoveListener);
                 break;
             case COMMAND_TURN_RIGHT:
-                turnRight();
+                turnRight(heroMoveListener);
                 onCommandEndAction(program, heroMoveListener);
                 break;
         }
@@ -65,36 +65,44 @@ class Interpreter {
         }
     }
 
-    private static void turnLeft() {
+    private static void turnLeft(HeroMoveListener heroMoveListener) {
         switch (sHeroDirection) {
             case TOP:
                 sHeroDirection = HeroDirection.LEFT;
+                heroMoveListener.changeDirection(HeroDirection.LEFT);
                 break;
             case RIGHT:
                 sHeroDirection = HeroDirection.TOP;
+                heroMoveListener.changeDirection(HeroDirection.TOP);
                 break;
             case BOTTOM:
                 sHeroDirection = HeroDirection.RIGHT;
+                heroMoveListener.changeDirection(HeroDirection.RIGHT);
                 break;
             case LEFT:
                 sHeroDirection = HeroDirection.BOTTOM;
+                heroMoveListener.changeDirection(HeroDirection.BOTTOM);
                 break;
         }
     }
 
-    private static void turnRight() {
+    private static void turnRight(HeroMoveListener heroMoveListener) {
         switch (sHeroDirection) {
             case TOP:
                 sHeroDirection = HeroDirection.RIGHT;
+                heroMoveListener.changeDirection(HeroDirection.RIGHT);
                 break;
             case RIGHT:
                 sHeroDirection = HeroDirection.BOTTOM;
+                heroMoveListener.changeDirection(HeroDirection.BOTTOM);
                 break;
             case BOTTOM:
                 sHeroDirection = HeroDirection.LEFT;
+                heroMoveListener.changeDirection(HeroDirection.LEFT);
                 break;
             case LEFT:
                 sHeroDirection = HeroDirection.TOP;
+                heroMoveListener.changeDirection(HeroDirection.TOP);
                 break;
         }
     }

@@ -9,6 +9,7 @@ import android.view.View;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.activities.GameActivity;
+import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.config.TrapConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
@@ -244,6 +245,15 @@ public class DungeonView extends View {
 
     public void moveHeroDown(HeroMoveAction onMoveEndAction) {
         mHero.moveDown(mFloors, onMoveEndAction, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
+    }
+
+    public void changeHeroDirection(HeroDirection heroDirection) {
+        mHero.changeDirection(heroDirection, new HeroMoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();

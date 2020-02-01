@@ -226,4 +226,23 @@ public class Hero extends DungeonPart {
 
         heroMoveAnimator.start();
     }
+
+    public void changeDirection(HeroDirection heroDirection, HeroMoveAction onChangeDirectionAction) {
+        switch (heroDirection) {
+            case TOP:
+                mBackgroundImage = mHeroTopImages.getStartImage();
+                break;
+            case RIGHT:
+                mBackgroundImage = mHeroRightImages.getStartImage();
+                break;
+            case BOTTOM:
+                mBackgroundImage = mHeroBotImages.getStartImage();
+                break;
+            case LEFT:
+                mBackgroundImage = mHeroLeftImages.getStartImage();
+                break;
+        }
+
+        onChangeDirectionAction.moveCallback();
+    }
 }

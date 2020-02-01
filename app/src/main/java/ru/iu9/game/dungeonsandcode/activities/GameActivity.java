@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import ru.iu9.game.dungeonsandcode.DncApplication;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.CodeFragment;
+import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
@@ -90,6 +91,16 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
 
         if (dungeonFragment != null) {
             dungeonFragment.moveHeroDown(onMoveEndAction);
+        }
+    }
+
+    @Override
+    public void changeDirection(HeroDirection heroDirection) {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.changeHeroDirection(heroDirection);
         }
     }
 }
