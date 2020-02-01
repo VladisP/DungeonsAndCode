@@ -6,4 +6,6 @@ public interface CodeEditor {
     void removeLastLine();
 
     void runProgram();
+
+    void deleteProgram();
 }

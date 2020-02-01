@@ -49,6 +49,10 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
         mCodeLines.remove(mCodeLines.size() - 1);
     }
 
+    public void removeAllLines() {
+        mCodeLines.clear();
+    }
+
     public List<String> getProgram() {
         return mCodeLines;
     }

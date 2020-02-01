@@ -71,6 +71,13 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 runProgram();
             }
         });
+
+        view.findViewById(R.id.delete_program_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteProgram();
+            }
+        });
     }
 
     @Override
@@ -146,6 +153,18 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
         if (codeAdapter != null) {
             Interpreter.run(codeAdapter.getProgram(), mHeroMoveListener);
+        }
+    }
+
+    @Override
+    public void deleteProgram() {
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
+
+        if (codeAdapter != null && codeAdapter.getItemCount() > 0) {
+            int linesCount = codeAdapter.getItemCount();
+
+            codeAdapter.removeAllLines();
+            codeAdapter.notifyItemRangeRemoved(0, linesCount);
         }
     }
 

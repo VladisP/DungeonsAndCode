@@ -19,6 +19,13 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/delete_program_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_delete_program_24dp" />
+
+            <ImageButton
                 android:id="@+id/remove_line_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
