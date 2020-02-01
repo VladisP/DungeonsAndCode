@@ -22,6 +22,8 @@ import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+
 public class CodeFragment extends Fragment implements CodeEditor {
 
     private HeroMoveListener mHeroMoveListener;
@@ -68,34 +70,6 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 runProgram();
             }
         });
-
-        view.findViewById(R.id.temp_up_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHeroMoveListener.moveUp();
-            }
-        });
-
-        view.findViewById(R.id.temp_down_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHeroMoveListener.moveDown();
-            }
-        });
-
-        view.findViewById(R.id.temp_left_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHeroMoveListener.moveLeft();
-            }
-        });
-
-        view.findViewById(R.id.temp_right_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHeroMoveListener.moveRight();
-            }
-        });
     }
 
     @Override
@@ -127,19 +101,19 @@ public class CodeFragment extends Fragment implements CodeEditor {
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_move_black_24dp,
-                        "move()"
+                        Interpreter.COMMAND_MOVE
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_left_black_24dp,
-                        "turnLeft()"
+                        Interpreter.COMMAND_TURN_LEFT
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_right_black_24dp,
-                        "turnRight()"
+                        Interpreter.COMMAND_TURN_RIGHT
                 )
         );
     }
@@ -175,12 +149,12 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     public interface HeroMoveListener {
-        void moveUp();
+        void moveUp(HeroMoveAction onMoveEndAction);
 
-        void moveLeft();
+        void moveLeft(HeroMoveAction onMoveEndAction);
 
-        void moveRight();
+        void moveRight(HeroMoveAction onMoveEndAction);
 
-        void moveDown();
+        void moveDown(HeroMoveAction onMoveEndAction);
     }
 }

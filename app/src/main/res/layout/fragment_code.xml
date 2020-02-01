@@ -18,30 +18,6 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/temp_up_btn"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="U" />
-
-            <Button
-                android:id="@+id/temp_down_btn"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="D" />
-
-            <Button
-                android:id="@+id/temp_left_btn"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="L" />
-
-            <Button
-                android:id="@+id/temp_right_btn"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="R" />
-
             <ImageButton
                 android:id="@+id/remove_line_button"
                 android:layout_width="wrap_content"

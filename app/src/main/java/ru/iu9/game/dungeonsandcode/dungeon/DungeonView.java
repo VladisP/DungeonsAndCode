@@ -215,8 +215,8 @@ public class DungeonView extends View {
         }
     }
 
-    public void moveHeroUp() {
-        mHero.moveUp(mFloors, new HeroMoveAction() {
+    public void moveHeroUp(HeroMoveAction onMoveEndAction) {
+        mHero.moveUp(mFloors, onMoveEndAction, new HeroMoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -224,8 +224,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroLeft() {
-        mHero.moveLeft(mFloors, new HeroMoveAction() {
+    public void moveHeroLeft(HeroMoveAction onMoveEndAction) {
+        mHero.moveLeft(mFloors, onMoveEndAction, new HeroMoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -233,8 +233,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroRight() {
-        mHero.moveRight(mFloors, new HeroMoveAction() {
+    public void moveHeroRight(HeroMoveAction onMoveEndAction) {
+        mHero.moveRight(mFloors, onMoveEndAction, new HeroMoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -242,8 +242,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroDown() {
-        mHero.moveDown(mFloors, new HeroMoveAction() {
+    public void moveHeroDown(HeroMoveAction onMoveEndAction) {
+        mHero.moveDown(mFloors, onMoveEndAction, new HeroMoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();

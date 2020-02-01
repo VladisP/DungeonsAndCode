@@ -4,43 +4,63 @@ import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 
-import static ru.iu9.game.dungeonsandcode.code.CodeFragment.*;
+import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
 
 class Interpreter {
 
+    static final String COMMAND_MOVE = "move()";
+    static final String COMMAND_TURN_LEFT = "turnLeft()";
+    static final String COMMAND_TURN_RIGHT = "turnRight()";
+
     private static HeroDirection sHeroDirection = HeroDirection.TOP;
+    private static int sCurrentCommand = 0;
 
-    static void run(List<String> program, HeroMoveListener heroMoveListener) {
-        sHeroDirection = HeroDirection.TOP;
+    static void run(final List<String> program, final HeroMoveListener heroMoveListener) {
+        String currentCommand = program.get(sCurrentCommand);
 
-        for (String command : program) {
-            switch (command) {
-                case "move()":
-                    move(heroMoveListener);
-                    break;
-                case "turnLeft()":
-                    turnLeft();
-                    break;
-                case "turnRight()":
-                    turnRight();
-                    break;
-            }
+        switch (currentCommand) {
+            case COMMAND_MOVE:
+                move(heroMoveListener, new HeroMoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        onCommandEndAction(program, heroMoveListener);
+                    }
+                });
+                break;
+            case COMMAND_TURN_LEFT:
+                turnLeft();
+                onCommandEndAction(program, heroMoveListener);
+                break;
+            case COMMAND_TURN_RIGHT:
+                turnRight();
+                onCommandEndAction(program, heroMoveListener);
+                break;
         }
     }
 
-    private static void move(HeroMoveListener heroMoveListener) {
+    private static void onCommandEndAction(final List<String> program, final HeroMoveListener heroMoveListener) {
+        if (sCurrentCommand == program.size() - 1) {
+            sCurrentCommand = 0;
+        } else {
+            sCurrentCommand++;
+            run(program, heroMoveListener);
+        }
+    }
+
+    private static void move(HeroMoveListener heroMoveListener, HeroMoveAction onMoveEndAction) {
         switch (sHeroDirection) {
             case TOP:
-                heroMoveListener.moveUp();
+                heroMoveListener.moveUp(onMoveEndAction);
                 break;
             case RIGHT:
-                heroMoveListener.moveRight();
+                heroMoveListener.moveRight(onMoveEndAction);
                 break;
             case BOTTOM:
-                heroMoveListener.moveDown();
+                heroMoveListener.moveDown(onMoveEndAction);
                 break;
             case LEFT:
-                heroMoveListener.moveLeft();
+                heroMoveListener.moveLeft(onMoveEndAction);
                 break;
         }
     }
