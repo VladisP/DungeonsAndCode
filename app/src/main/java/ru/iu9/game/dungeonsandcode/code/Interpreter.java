@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 
+import static ru.iu9.game.dungeonsandcode.code.CodeFragment.*;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
 
@@ -16,9 +17,10 @@ class Interpreter {
     private static HeroDirection sHeroDirection = HeroDirection.TOP;
     private static int sCurrentCommand = 0;
 
-    static void run(final List<String> program, final HeroMoveListener heroMoveListener) {
+    static void run(final List<String> program, final HeroMoveListener heroMoveListener, final InterpreterActionListener interpreterActionListener) {
         if (sCurrentCommand >= program.size()) {
             sCurrentCommand = 0;
+            interpreterActionListener.onInterpretationFinished();
             return;
         }
 
@@ -29,24 +31,24 @@ class Interpreter {
                 move(heroMoveListener, new HeroMoveAction() {
                     @Override
                     public void moveCallback() {
-                        onCommandEndAction(program, heroMoveListener);
+                        onCommandEndAction(program, heroMoveListener, interpreterActionListener);
                     }
                 });
                 break;
             case COMMAND_TURN_LEFT:
                 turnLeft(heroMoveListener);
-                onCommandEndAction(program, heroMoveListener);
+                onCommandEndAction(program, heroMoveListener, interpreterActionListener);
                 break;
             case COMMAND_TURN_RIGHT:
                 turnRight(heroMoveListener);
-                onCommandEndAction(program, heroMoveListener);
+                onCommandEndAction(program, heroMoveListener, interpreterActionListener);
                 break;
         }
     }
 
-    private static void onCommandEndAction(final List<String> program, final HeroMoveListener heroMoveListener) {
+    private static void onCommandEndAction(final List<String> program, final HeroMoveListener heroMoveListener, InterpreterActionListener interpreterActionListener) {
         sCurrentCommand++;
-        run(program, heroMoveListener);
+        run(program, heroMoveListener, interpreterActionListener);
     }
 
     private static void move(HeroMoveListener heroMoveListener, HeroMoveAction onMoveEndAction) {

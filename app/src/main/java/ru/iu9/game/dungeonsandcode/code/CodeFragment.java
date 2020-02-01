@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     private HeroMoveListener mHeroMoveListener;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
+    private ImageButton mRunButton;
 
     public static CodeFragment newInstance() {
         return new CodeFragment();
@@ -65,17 +67,19 @@ public class CodeFragment extends Fragment implements CodeEditor {
             }
         });
 
-        view.findViewById(R.id.run_program_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runProgram();
-            }
-        });
-
         view.findViewById(R.id.delete_program_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteProgram();
+            }
+        });
+
+        mRunButton = view.findViewById(R.id.run_program_button);
+
+        mRunButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                runProgram();
             }
         });
     }
@@ -152,7 +156,14 @@ public class CodeFragment extends Fragment implements CodeEditor {
         CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
         if (codeAdapter != null) {
-            Interpreter.run(codeAdapter.getProgram(), mHeroMoveListener);
+            mRunButton.setEnabled(false);
+
+            Interpreter.run(codeAdapter.getProgram(), mHeroMoveListener, new InterpreterActionListener() {
+                @Override
+                public void onInterpretationFinished() {
+                    mRunButton.setEnabled(true);
+                }
+            });
         }
     }
 
@@ -178,5 +189,9 @@ public class CodeFragment extends Fragment implements CodeEditor {
         void moveDown(HeroMoveAction onMoveEndAction);
 
         void changeDirection(HeroDirection heroDirection);
+    }
+
+    public interface InterpreterActionListener {
+        void onInterpretationFinished();
     }
 }
