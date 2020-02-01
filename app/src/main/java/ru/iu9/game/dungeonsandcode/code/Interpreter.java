@@ -17,7 +17,8 @@ class Interpreter {
     private static int sCurrentCommand = 0;
 
     static void run(final List<String> program, final HeroMoveListener heroMoveListener) {
-        if (program.size() == 0) {
+        if (sCurrentCommand >= program.size()) {
+            sCurrentCommand = 0;
             return;
         }
 
@@ -44,12 +45,8 @@ class Interpreter {
     }
 
     private static void onCommandEndAction(final List<String> program, final HeroMoveListener heroMoveListener) {
-        if (sCurrentCommand == program.size() - 1) {
-            sCurrentCommand = 0;
-        } else {
-            sCurrentCommand++;
-            run(program, heroMoveListener);
-        }
+        sCurrentCommand++;
+        run(program, heroMoveListener);
     }
 
     private static void move(HeroMoveListener heroMoveListener, HeroMoveAction onMoveEndAction) {
