@@ -17,6 +17,10 @@ class Interpreter {
     private static int sCurrentCommand = 0;
 
     static void run(final List<String> program, final HeroMoveListener heroMoveListener) {
+        if (program.size() == 0) {
+            return;
+        }
+
         String currentCommand = program.get(sCurrentCommand);
 
         switch (currentCommand) {
