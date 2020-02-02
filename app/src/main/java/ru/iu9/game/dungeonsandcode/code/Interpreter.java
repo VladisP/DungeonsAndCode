@@ -13,6 +13,7 @@ class Interpreter {
     static final String COMMAND_MOVE = "move()";
     static final String COMMAND_TURN_LEFT = "turnLeft()";
     static final String COMMAND_TURN_RIGHT = "turnRight()";
+    static final String COMMAND_REPEAT = "repeat";
 
     private static HeroDirection sHeroDirection = HeroDirection.TOP;
     private static int sCurrentCommand = 0;

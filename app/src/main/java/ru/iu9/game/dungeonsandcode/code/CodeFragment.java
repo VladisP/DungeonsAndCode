@@ -1,6 +1,8 @@
 package ru.iu9.game.dungeonsandcode.code;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +20,14 @@ import java.util.List;
 import java.util.Objects;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.dialog.RepNumPickerFragment;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
+import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
+import ru.iu9.game.dungeonsandcode.log.Logger;
 
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
 
@@ -128,6 +133,25 @@ public class CodeFragment extends Fragment implements CodeEditor {
                         Interpreter.COMMAND_TURN_RIGHT
                 )
         );
+        mCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_repeat_black_24dp,
+                        Interpreter.COMMAND_REPEAT
+                )
+        );
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return;
+        }
+
+        if (requestCode == CommandHolder.REQUEST_REP_NUM) {
+            int repNum = data.getIntExtra(RepNumPickerFragment.EXTRA_NUM, 1);
+            Logger.log(repNum);
+            //TODO: что-то сделать с repNum
+        }
     }
 
     @Override

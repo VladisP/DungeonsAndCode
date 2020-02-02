@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DungeonsAndCode</string>
+    <string name="select_rep_num">Укажите количество повторений</string>
+    <string name="ok">ОК</string>
 </resources>

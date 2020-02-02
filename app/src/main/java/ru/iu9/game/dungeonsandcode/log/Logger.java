@@ -9,4 +9,8 @@ public class Logger {
     public static void log(String msg) {
         Log.d(LOG_TAG, msg);
     }
+
+    public static void log(int msg) {
+        Log.d(LOG_TAG, Integer.toString(msg));
+    }
 }
