@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     private Context mContext;
-    private List<String> mCodeLines;
+    private List<CodeLine> mCodeLines;
 
-    public CodeAdapter(Context context, List<String> codeLines) {
+    public CodeAdapter(Context context, List<CodeLine> codeLines) {
         mContext = context;
         mCodeLines = codeLines;
     }
@@ -32,7 +33,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CodeHolder holder, int position) {
-        String codeLine = mCodeLines.get(position);
+        CodeLine codeLine = mCodeLines.get(position);
         holder.bind(codeLine, position);
     }
 
@@ -41,7 +42,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
         return mCodeLines.size();
     }
 
-    public void addCodeLine(String codeLine) {
+    public void addCodeLine(CodeLine codeLine) {
         mCodeLines.add(codeLine);
     }
 
@@ -53,7 +54,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
         mCodeLines.clear();
     }
 
-    public List<String> getProgram() {
+    public List<CodeLine> getProgram() {
         return mCodeLines;
     }
 }

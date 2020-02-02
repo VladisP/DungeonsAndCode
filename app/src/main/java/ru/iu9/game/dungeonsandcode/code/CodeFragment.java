@@ -22,18 +22,20 @@ import java.util.Objects;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.dialog.RepNumPickerFragment;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
+import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
-import ru.iu9.game.dungeonsandcode.log.Logger;
 
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
 
 public class CodeFragment extends Fragment implements CodeEditor {
 
     private HeroMoveListener mHeroMoveListener;
+    private RecyclerView mCommandList;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
     private ImageButton mRunButton;
@@ -96,11 +98,11 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     private void initCommandList(View view) {
-        RecyclerView commandList = view.findViewById(R.id.command_list);
+        mCommandList = view.findViewById(R.id.command_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
 
-        commandList.setLayoutManager(layoutManager);
-        commandList.setAdapter(new CommandAdapter(getContext(), this, mCommandListItems));
+        mCommandList.setLayoutManager(layoutManager);
+        mCommandList.setAdapter(new CommandAdapter(getContext(), this, mCommandListItems));
     }
 
     private void initCodeList(View view) {
@@ -108,7 +110,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         mCodeList.setLayoutManager(layoutManager);
-        mCodeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<String>()));
+        mCodeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<CodeLine>()));
         Objects.requireNonNull(mCodeList.getItemAnimator()).setRemoveDuration(0L);
     }
 
@@ -118,25 +120,25 @@ public class CodeFragment extends Fragment implements CodeEditor {
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_move_black_24dp,
-                        Interpreter.COMMAND_MOVE
+                        CommandType.MOVE
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_left_black_24dp,
-                        Interpreter.COMMAND_TURN_LEFT
+                        CommandType.TURN_LEFT
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_turn_right_black_24dp,
-                        Interpreter.COMMAND_TURN_RIGHT
+                        CommandType.TURN_RIGHT
                 )
         );
         mCommandListItems.add(
                 new CommandListItem(
                         R.drawable.ic_command_repeat_black_24dp,
-                        Interpreter.COMMAND_REPEAT
+                        CommandType.REPEAT
                 )
         );
     }
@@ -149,13 +151,18 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
         if (requestCode == CommandHolder.REQUEST_REP_NUM) {
             int repNum = data.getIntExtra(RepNumPickerFragment.EXTRA_NUM, 1);
-            Logger.log(repNum);
-            //TODO: что-то сделать с repNum
+
+            CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+            if (commandAdapter != null) {
+                addCodeLine(new CodeLine(CommandType.REPEAT, commandAdapter.getNestingLevel(), repNum));
+                incNestingLevel();
+            }
         }
     }
 
     @Override
-    public void addCodeLine(String codeLine) {
+    public void addCodeLine(CodeLine codeLine) {
         CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
         if (codeAdapter != null) {
@@ -200,6 +207,31 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
             codeAdapter.removeAllLines();
             codeAdapter.notifyItemRangeRemoved(0, linesCount);
+        }
+    }
+
+    @Override
+    public int getNestingLevel() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        return commandAdapter == null ? 0 : commandAdapter.getNestingLevel();
+    }
+
+    @Override
+    public void incNestingLevel() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            commandAdapter.incNestingLevel();
+        }
+    }
+
+    @Override
+    public void decNestingLevel() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            commandAdapter.decNestingLevel();
         }
     }
 

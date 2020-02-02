@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Locale;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 
 class CodeHolder extends RecyclerView.ViewHolder {
 
@@ -21,8 +22,8 @@ class CodeHolder extends RecyclerView.ViewHolder {
         mCodeTextView = itemView.findViewById(R.id.code_line);
     }
 
-    void bind(String codeLine, int position) {
+    void bind(CodeLine codeLine, int position) {
         mLineNumberTextView.setText(String.format(Locale.US, "%d", position + 1));
-        mCodeTextView.setText(codeLine);
+        mCodeTextView.setText(codeLine.getLineText());
     }
 }

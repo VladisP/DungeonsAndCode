@@ -1,11 +1,17 @@
 package ru.iu9.game.dungeonsandcode.code.helpers;
 
 public interface CodeEditor {
-    void addCodeLine(String codeLine);
+    void addCodeLine(CodeLine codeLine);
 
     void removeLastLine();
 
     void runProgram();
 
     void deleteProgram();
+
+    int getNestingLevel();
+
+    void incNestingLevel();
+
+    void decNestingLevel();
 }

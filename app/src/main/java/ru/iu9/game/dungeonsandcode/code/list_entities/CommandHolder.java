@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.dialog.RepNumPickerFragment;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
+import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
 
 public class CommandHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -36,9 +38,21 @@ public class CommandHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        //TODO: add repeat check... AND UNCOMMENT THIS
-//        mCodeEditor.addCodeLine(mCommandListItem.getCommandText());
+        if (mCommandListItem.getType() == CommandType.REPEAT) {
+            showNumPickDialog();
+        } else if (mCommandListItem.getType() == CommandType.CANCEL) {
+            mCodeEditor.decNestingLevel();
+        } else {
+            mCodeEditor.addCodeLine(
+                    new CodeLine(
+                            mCommandListItem.getType(),
+                            mCodeEditor.getNestingLevel()
+                    )
+            );
+        }
+    }
 
+    private void showNumPickDialog() {
         FragmentManager fragmentManager = ((Fragment) mCodeEditor).getFragmentManager();
 
         if (fragmentManager != null) {
