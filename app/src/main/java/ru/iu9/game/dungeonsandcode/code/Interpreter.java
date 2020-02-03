@@ -1,9 +1,11 @@
 package ru.iu9.game.dungeonsandcode.code;
 
 import java.util.List;
+import java.util.Stack;
 
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
+import ru.iu9.game.dungeonsandcode.code.helpers.RepeatConfig;
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.*;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
@@ -39,6 +41,18 @@ class Interpreter {
             case TURN_RIGHT:
                 turnRight(heroMoveListener);
                 onCommandEndAction(program, heroMoveListener, interpreterActionListener);
+                break;
+            case REPEAT:
+                RepeatConfig mainConfig = new RepeatConfig(
+                        currentLine.getRepNum(),
+                        currentLine.getNestingLevel() + 1,
+                        ++sCurrentLine,
+                        program,
+                        heroMoveListener,
+                        interpreterActionListener
+                );
+
+                repeat(mainConfig, new Stack<RepeatConfig>());
                 break;
         }
     }
@@ -105,5 +119,87 @@ class Interpreter {
                 heroMoveListener.changeDirection(HeroDirection.TOP);
                 break;
         }
+    }
+
+    private static void repeat(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
+        if (
+                sCurrentLine >= mainConfig.getProgram().size() ||
+                        mainConfig.getProgram().get(sCurrentLine).getNestingLevel() < mainConfig.getNestLevel()
+        ) {
+            if (mainConfig.getRepNum() > 1) {
+                sCurrentLine = mainConfig.getStartLine();
+
+                repeat(
+                        new RepeatConfig(
+                                mainConfig.getRepNum() - 1,
+                                mainConfig.getNestLevel(),
+                                mainConfig.getStartLine(),
+                                mainConfig.getProgram(),
+                                mainConfig.getMoveListener(),
+                                mainConfig.getInterpreterActionListener()
+                        ),
+                        outerConfigs
+                );
+            } else if (mainConfig.getNestLevel() == 1) {
+                run(mainConfig.getProgram(), mainConfig.getMoveListener(), mainConfig.getInterpreterActionListener());
+            } else if (mainConfig.getNestLevel() > 1) {
+                RepeatConfig outerConfig = outerConfigs.pop();
+
+                repeat(
+                        new RepeatConfig(
+                                outerConfig.getRepNum(),
+                                outerConfig.getNestLevel(),
+                                outerConfig.getStartLine(),
+                                outerConfig.getProgram(),
+                                outerConfig.getMoveListener(),
+                                outerConfig.getInterpreterActionListener()
+                        ),
+                        outerConfigs
+                );
+            }
+
+            return;
+        }
+
+        CodeLine currentLine = mainConfig.getProgram().get(sCurrentLine);
+
+        switch (currentLine.getCommandType()) {
+            case MOVE:
+                move(mainConfig.getMoveListener(), new HeroMoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        onRepeatCommandEndAction(mainConfig, outerConfigs);
+                    }
+                });
+                break;
+            case TURN_LEFT:
+                turnLeft(mainConfig.getMoveListener());
+                onRepeatCommandEndAction(mainConfig, outerConfigs);
+                break;
+            case TURN_RIGHT:
+                turnRight(mainConfig.getMoveListener());
+                onRepeatCommandEndAction(mainConfig, outerConfigs);
+                break;
+            case REPEAT:
+                outerConfigs.push(mainConfig);
+
+                repeat(
+                        new RepeatConfig(
+                                currentLine.getRepNum(),
+                                mainConfig.getNestLevel() + 1,
+                                ++sCurrentLine,
+                                mainConfig.getProgram(),
+                                mainConfig.getMoveListener(),
+                                mainConfig.getInterpreterActionListener()
+                        ),
+                        outerConfigs
+                );
+                break;
+        }
+    }
+
+    private static void onRepeatCommandEndAction(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
+        sCurrentLine++;
+        repeat(mainConfig, outerConfigs);
     }
 }

@@ -10,6 +10,7 @@ public class CodeLine {
 
     private CommandType mCommandType;
     private int mNestingLevel;
+    private int mRepNum;
     private String mLineText;
 
     public CodeLine(CommandType commandType, int nestingLevel) {
@@ -19,6 +20,7 @@ public class CodeLine {
     public CodeLine(CommandType commandType, int nestingLevel, int repNum) {
         mCommandType = commandType;
         mNestingLevel = nestingLevel;
+        mRepNum = repNum;
         mLineText = createLineText(commandType, nestingLevel, repNum);
     }
 
@@ -53,6 +55,10 @@ public class CodeLine {
 
     public int getNestingLevel() {
         return mNestingLevel;
+    }
+
+    public int getRepNum() {
+        return mRepNum;
     }
 
     public String getLineText() {
