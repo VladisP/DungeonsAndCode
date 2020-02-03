@@ -2,4 +2,6 @@
     <string name="app_name">DungeonsAndCode</string>
     <string name="select_rep_num">Укажите количество повторений</string>
     <string name="ok">ОК</string>
+    <string name="nesting_level">Уровень вложенности:</string>
+    <string name="zero">0</string>
 </resources>

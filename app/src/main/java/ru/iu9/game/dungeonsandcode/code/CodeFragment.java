@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import ru.iu9.game.dungeonsandcode.R;
@@ -39,6 +41,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
     private ImageButton mRunButton;
+    private TextView mNestingLevelTextView;
 
     public static CodeFragment newInstance() {
         return new CodeFragment();
@@ -67,6 +70,8 @@ public class CodeFragment extends Fragment implements CodeEditor {
         initCommandList(view);
         initCodeList(view);
 
+        mNestingLevelTextView = view.findViewById(R.id.nesting_level_text);
+
         view.findViewById(R.id.remove_line_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +86,21 @@ public class CodeFragment extends Fragment implements CodeEditor {
             }
         });
 
-        mRunButton = view.findViewById(R.id.run_program_button);
+        view.findViewById(R.id.inc_nest_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incNestingLevel();
+            }
+        });
 
+        view.findViewById(R.id.dec_nest_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decNestingLevel();
+            }
+        });
+
+        mRunButton = view.findViewById(R.id.run_program_button);
         mRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +241,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
         if (commandAdapter != null) {
             commandAdapter.incNestingLevel();
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
         }
     }
 
@@ -230,8 +249,9 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void decNestingLevel() {
         CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
 
-        if (commandAdapter != null) {
+        if (commandAdapter != null && commandAdapter.getNestingLevel() > 0) {
             commandAdapter.decNestingLevel();
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
         }
     }
 

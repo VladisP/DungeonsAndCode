@@ -40,8 +40,6 @@ public class CommandHolder extends RecyclerView.ViewHolder implements View.OnCli
     public void onClick(View v) {
         if (mCommandListItem.getType() == CommandType.REPEAT) {
             showNumPickDialog();
-        } else if (mCommandListItem.getType() == CommandType.CANCEL) {
-            mCodeEditor.decNestingLevel();
         } else {
             mCodeEditor.addCodeLine(
                     new CodeLine(

@@ -4,6 +4,5 @@ public enum CommandType {
     MOVE,
     TURN_RIGHT,
     TURN_LEFT,
-    REPEAT,
-    CANCEL
+    REPEAT
 }
