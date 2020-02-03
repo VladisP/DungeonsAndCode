@@ -5,38 +5,114 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/up_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вверх" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:background="@color/colorBlack"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/left_btn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:text="Влево" />
+            android:gravity="end"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/right_btn"
-            android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/delete_program_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_delete_program_24dp" />
+
+            <ImageButton
+                android:id="@+id/remove_line_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_remove_line_24dp" />
+
+            <ImageButton
+                android:id="@+id/run_program_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_run_program_24dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorCode" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Вправо" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="@string/nesting_level"
+                android:textColor="@color/colorLineNumber"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/nesting_level_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textColor="@color/colorLineNumber"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <ImageButton
+                    android:id="@+id/inc_nest_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_inc_nest_24dp" />
+
+                <ImageButton
+                    android:id="@+id/dec_nest_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_dec_nest_24dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorCode" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/code_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/down_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вниз" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/command_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>

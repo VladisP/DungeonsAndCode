@@ -9,6 +9,7 @@ import android.view.View;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.activities.GameActivity;
+import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.config.TrapConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Floor;
@@ -215,23 +216,52 @@ public class DungeonView extends View {
         }
     }
 
-    public void moveHeroUp() {
-        mHero.moveUp(mFloors);
-        invalidate();
+    public void moveHeroUp(HeroMoveAction onMoveEndAction) {
+        mHero.moveUp(mFloors, onMoveEndAction, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
-    public void moveHeroLeft() {
-        mHero.moveLeft(mFloors);
-        invalidate();
+    public void moveHeroLeft(HeroMoveAction onMoveEndAction) {
+        mHero.moveLeft(mFloors, onMoveEndAction, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
-    public void moveHeroRight() {
-        mHero.moveRight(mFloors);
-        invalidate();
+    public void moveHeroRight(HeroMoveAction onMoveEndAction) {
+        mHero.moveRight(mFloors, onMoveEndAction, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
     }
 
-    public void moveHeroDown() {
-        mHero.moveDown(mFloors);
-        invalidate();
+    public void moveHeroDown(HeroMoveAction onMoveEndAction) {
+        mHero.moveDown(mFloors, onMoveEndAction, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
+    }
+
+    public void changeHeroDirection(HeroDirection heroDirection) {
+        mHero.changeDirection(heroDirection, new HeroMoveAction() {
+            @Override
+            public void moveCallback() {
+                invalidate();
+            }
+        });
+    }
+
+    public interface HeroMoveAction {
+        void moveCallback();
     }
 }

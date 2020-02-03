@@ -10,6 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
+
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.*;
 
 public class DungeonFragment extends Fragment {
 
@@ -37,19 +40,23 @@ public class DungeonFragment extends Fragment {
         mDungeonView = null;
     }
 
-    public void moveHeroUp() {
-        mDungeonView.moveHeroUp();
+    public void moveHeroUp(HeroMoveAction onMoveEndAction) {
+        mDungeonView.moveHeroUp(onMoveEndAction);
     }
 
-    public void moveHeroLeft() {
-        mDungeonView.moveHeroLeft();
+    public void moveHeroLeft(HeroMoveAction onMoveEndAction) {
+        mDungeonView.moveHeroLeft(onMoveEndAction);
     }
 
-    public void moveHeroRight() {
-        mDungeonView.moveHeroRight();
+    public void moveHeroRight(HeroMoveAction onMoveEndAction) {
+        mDungeonView.moveHeroRight(onMoveEndAction);
     }
 
-    public void moveHeroDown() {
-        mDungeonView.moveHeroDown();
+    public void moveHeroDown(HeroMoveAction onMoveEndAction) {
+        mDungeonView.moveHeroDown(onMoveEndAction);
+    }
+
+    public void changeHeroDirection(HeroDirection heroDirection) {
+        mDungeonView.changeHeroDirection(heroDirection);
     }
 }
