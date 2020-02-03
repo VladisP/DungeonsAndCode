@@ -58,4 +58,8 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
     public void decNestingLevel() {
         mNestingLevel--;
     }
+
+    public void clearNestingLevel() {
+        mNestingLevel = 0;
+    }
 }

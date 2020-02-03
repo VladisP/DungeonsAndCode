@@ -226,6 +226,8 @@ public class CodeFragment extends Fragment implements CodeEditor {
             codeAdapter.removeAllLines();
             codeAdapter.notifyItemRangeRemoved(0, linesCount);
         }
+
+        clearNestingLevel();
     }
 
     @Override
@@ -252,6 +254,16 @@ public class CodeFragment extends Fragment implements CodeEditor {
         if (commandAdapter != null && commandAdapter.getNestingLevel() > 0) {
             commandAdapter.decNestingLevel();
             mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
+        }
+    }
+
+    @Override
+    public void clearNestingLevel() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            commandAdapter.clearNestingLevel();
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", 0));
         }
     }
 
