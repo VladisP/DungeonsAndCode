@@ -9,10 +9,12 @@ import ru.iu9.game.dungeonsandcode.R;
 public class Floor extends DungeonPart {
 
     private boolean mIsWall;
+    private Trap mTrap;
 
     public Floor(int left, int top, int right, int bottom, Resources resources, boolean isWall) {
         super(left, top, right, bottom);
         mIsWall = isWall;
+        mTrap = null;
         mBackgroundImage = createBackgroundImage(resources);
     }
 
@@ -30,5 +32,13 @@ public class Floor extends DungeonPart {
 
     boolean isWall() {
         return mIsWall;
+    }
+
+    Trap getTrap() {
+        return mTrap;
+    }
+
+    public void setTrap(Trap trap) {
+        mTrap = trap;
     }
 }

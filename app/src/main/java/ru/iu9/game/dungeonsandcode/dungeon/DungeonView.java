@@ -191,6 +191,8 @@ public class DungeonView extends View {
                     getResources(),
                     convertToTrapType(trapConfig.getTrapType())
             );
+
+            startFloor.setTrap(traps[i]);
         }
 
         return traps;
@@ -216,8 +218,8 @@ public class DungeonView extends View {
         }
     }
 
-    public void moveHeroUp(HeroMoveAction onMoveEndAction) {
-        mHero.moveUp(mFloors, onMoveEndAction, new HeroMoveAction() {
+    public void moveHeroUp(MoveAction onMoveEndAction) {
+        mHero.moveUp(mFloors, onMoveEndAction, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -225,8 +227,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroLeft(HeroMoveAction onMoveEndAction) {
-        mHero.moveLeft(mFloors, onMoveEndAction, new HeroMoveAction() {
+    public void moveHeroLeft(MoveAction onMoveEndAction) {
+        mHero.moveLeft(mFloors, onMoveEndAction, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -234,8 +236,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroRight(HeroMoveAction onMoveEndAction) {
-        mHero.moveRight(mFloors, onMoveEndAction, new HeroMoveAction() {
+    public void moveHeroRight(MoveAction onMoveEndAction) {
+        mHero.moveRight(mFloors, onMoveEndAction, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -243,8 +245,8 @@ public class DungeonView extends View {
         });
     }
 
-    public void moveHeroDown(HeroMoveAction onMoveEndAction) {
-        mHero.moveDown(mFloors, onMoveEndAction, new HeroMoveAction() {
+    public void moveHeroDown(MoveAction onMoveEndAction) {
+        mHero.moveDown(mFloors, onMoveEndAction, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -253,7 +255,7 @@ public class DungeonView extends View {
     }
 
     public void changeHeroDirection(HeroDirection heroDirection) {
-        mHero.changeDirection(heroDirection, new HeroMoveAction() {
+        mHero.changeDirection(heroDirection, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -261,7 +263,7 @@ public class DungeonView extends View {
         });
     }
 
-    public interface HeroMoveAction {
+    public interface MoveAction {
         void moveCallback();
     }
 }

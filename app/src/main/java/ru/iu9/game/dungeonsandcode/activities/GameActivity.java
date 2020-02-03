@@ -14,7 +14,7 @@ import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 
-import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class GameActivity extends AppCompatActivity implements CodeFragment.HeroMoveListener {
 
@@ -55,7 +55,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
     }
 
     @Override
-    public void moveUp(HeroMoveAction onMoveEndAction) {
+    public void moveUp(MoveAction onMoveEndAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -65,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
     }
 
     @Override
-    public void moveLeft(HeroMoveAction onMoveEndAction) {
+    public void moveLeft(MoveAction onMoveEndAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -75,7 +75,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
     }
 
     @Override
-    public void moveRight(HeroMoveAction onMoveEndAction) {
+    public void moveRight(MoveAction onMoveEndAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
@@ -85,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
     }
 
     @Override
-    public void moveDown(HeroMoveAction onMoveEndAction) {
+    public void moveDown(MoveAction onMoveEndAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 

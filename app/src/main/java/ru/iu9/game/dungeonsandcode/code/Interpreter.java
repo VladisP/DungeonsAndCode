@@ -9,7 +9,7 @@ import ru.iu9.game.dungeonsandcode.code.helpers.RepeatConfig;
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.*;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
-import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 class Interpreter {
 
@@ -27,7 +27,7 @@ class Interpreter {
 
         switch (currentLine.getCommandType()) {
             case MOVE:
-                move(heroMoveListener, new HeroMoveAction() {
+                move(heroMoveListener, new MoveAction() {
                     @Override
                     public void moveCallback() {
                         onCommandEndAction(program, heroMoveListener, interpreterActionListener);
@@ -62,7 +62,7 @@ class Interpreter {
         run(program, heroMoveListener, interpreterActionListener);
     }
 
-    private static void move(HeroMoveListener heroMoveListener, HeroMoveAction onMoveEndAction) {
+    private static void move(HeroMoveListener heroMoveListener, MoveAction onMoveEndAction) {
         switch (sHeroDirection) {
             case TOP:
                 heroMoveListener.moveUp(onMoveEndAction);
@@ -165,7 +165,7 @@ class Interpreter {
 
         switch (currentLine.getCommandType()) {
             case MOVE:
-                move(mainConfig.getMoveListener(), new HeroMoveAction() {
+                move(mainConfig.getMoveListener(), new MoveAction() {
                     @Override
                     public void moveCallback() {
                         onRepeatCommandEndAction(mainConfig, outerConfigs);

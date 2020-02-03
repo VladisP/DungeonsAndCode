@@ -14,15 +14,10 @@ import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.HeroImages;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 
-import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class Hero extends DungeonPart {
 
-    private static final String ANIMATION_PROPERTY_TOP = "top";
-    private static final String ANIMATION_PROPERTY_RIGHT = "right";
-    private static final String ANIMATION_PROPERTY_BOT = "bot";
-    private static final String ANIMATION_PROPERTY_LEFT = "left";
-    private static final int ANIMATION_DURATION = 1000;
     private static final int ANIMATION_FREQUENCY_FACTOR = 4;
 
     private PositionPair mPositionPair;
@@ -135,7 +130,7 @@ public class Hero extends DungeonPart {
         return ids;
     }
 
-    public void moveUp(Floor[][] floors, HeroMoveAction onMoveEndAction, HeroMoveAction heroMoveAction) {
+    public void moveUp(Floor[][] floors, MoveAction onMoveEndAction, MoveAction heroMoveAction) {
         int rowPosition = mPositionPair.getRowPosition();
 
         if (rowPosition == 0 || floors[rowPosition - 1][mPositionPair.getColumnPosition()].isWall()) {
@@ -147,7 +142,7 @@ public class Hero extends DungeonPart {
         bindWithFloor(floors, onMoveEndAction, heroMoveAction, mHeroTopImages);
     }
 
-    public void moveLeft(Floor[][] floors, HeroMoveAction onMoveEndAction, HeroMoveAction heroMoveAction) {
+    public void moveLeft(Floor[][] floors, MoveAction onMoveEndAction, MoveAction heroMoveAction) {
         int columnPosition = mPositionPair.getColumnPosition();
 
         if (columnPosition == 0 || floors[mPositionPair.getRowPosition()][columnPosition - 1].isWall()) {
@@ -159,7 +154,7 @@ public class Hero extends DungeonPart {
         bindWithFloor(floors, onMoveEndAction, heroMoveAction, mHeroLeftImages);
     }
 
-    public void moveRight(Floor[][] floors, HeroMoveAction onMoveEndAction, HeroMoveAction heroMoveAction) {
+    public void moveRight(Floor[][] floors, MoveAction onMoveEndAction, MoveAction heroMoveAction) {
         int columnPosition = mPositionPair.getColumnPosition();
 
         if (columnPosition == floors.length - 1 || floors[mPositionPair.getRowPosition()][columnPosition + 1].isWall()) {
@@ -171,7 +166,7 @@ public class Hero extends DungeonPart {
         bindWithFloor(floors, onMoveEndAction, heroMoveAction, mHeroRightImages);
     }
 
-    public void moveDown(Floor[][] floors, HeroMoveAction onMoveEndAction, HeroMoveAction heroMoveAction) {
+    public void moveDown(Floor[][] floors, MoveAction onMoveEndAction, MoveAction heroMoveAction) {
         int rowPosition = mPositionPair.getRowPosition();
 
         if (rowPosition == floors.length - 1 || floors[rowPosition + 1][mPositionPair.getColumnPosition()].isWall()) {
@@ -183,7 +178,7 @@ public class Hero extends DungeonPart {
         bindWithFloor(floors, onMoveEndAction, heroMoveAction, mHeroBotImages);
     }
 
-    private void bindWithFloor(Floor[][] floors, final HeroMoveAction onMoveEndAction, final HeroMoveAction heroMoveAction, final HeroImages heroImages) {
+    private void bindWithFloor(Floor[][] floors, final MoveAction onMoveEndAction, final MoveAction heroMoveAction, final HeroImages heroImages) {
         final Floor heroFloor = floors[mPositionPair.getRowPosition()][mPositionPair.getColumnPosition()];
 
         PropertyValuesHolder propertyTop = PropertyValuesHolder.ofInt(ANIMATION_PROPERTY_TOP, mTop, heroFloor.mTop);
@@ -221,13 +216,18 @@ public class Hero extends DungeonPart {
                 mLeft = (int) animation.getAnimatedValue(ANIMATION_PROPERTY_LEFT);
 
                 heroMoveAction.moveCallback();
+
+                if (heroFloor.getTrap() != null && !heroFloor.getTrap().isAnimated()) {
+                    heroFloor.getTrap().setAnimated(true);
+                    heroFloor.getTrap().startAnimation(heroMoveAction);
+                }
             }
         });
 
         heroMoveAnimator.start();
     }
 
-    public void changeDirection(HeroDirection heroDirection, HeroMoveAction onChangeDirectionAction) {
+    public void changeDirection(HeroDirection heroDirection, MoveAction onChangeDirectionAction) {
         switch (heroDirection) {
             case TOP:
                 mBackgroundImage = mHeroTopImages.getStartImage();

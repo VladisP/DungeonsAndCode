@@ -32,7 +32,7 @@ import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
 
-import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class CodeFragment extends Fragment implements CodeEditor {
 
@@ -268,13 +268,13 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     public interface HeroMoveListener {
-        void moveUp(HeroMoveAction onMoveEndAction);
+        void moveUp(MoveAction onMoveEndAction);
 
-        void moveLeft(HeroMoveAction onMoveEndAction);
+        void moveLeft(MoveAction onMoveEndAction);
 
-        void moveRight(HeroMoveAction onMoveEndAction);
+        void moveRight(MoveAction onMoveEndAction);
 
-        void moveDown(HeroMoveAction onMoveEndAction);
+        void moveDown(MoveAction onMoveEndAction);
 
         void changeDirection(HeroDirection heroDirection);
     }
