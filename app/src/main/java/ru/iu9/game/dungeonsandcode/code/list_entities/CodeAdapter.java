@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
+import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     private Context mContext;
+    private CodeEditor mCodeEditor;
     private List<CodeLine> mCodeLines;
 
-    public CodeAdapter(Context context, List<CodeLine> codeLines) {
+    public CodeAdapter(Context context, CodeEditor codeEditor, List<CodeLine> codeLines) {
         mContext = context;
+        mCodeEditor = codeEditor;
         mCodeLines = codeLines;
     }
 
@@ -47,6 +51,10 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
     }
 
     public void removeLastLine() {
+        if (mCodeLines.get(getItemCount() - 1).getCommandType() == CommandType.REPEAT) {
+            mCodeEditor.decNestingLevel();
+        }
+
         mCodeLines.remove(mCodeLines.size() - 1);
     }
 

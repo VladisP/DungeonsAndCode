@@ -128,7 +128,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         mCodeList.setLayoutManager(layoutManager);
-        mCodeList.setAdapter(new CodeAdapter(getContext(), new ArrayList<CodeLine>()));
+        mCodeList.setAdapter(new CodeAdapter(getContext(), this, new ArrayList<CodeLine>()));
         Objects.requireNonNull(mCodeList.getItemAnimator()).setRemoveDuration(0L);
     }
 
