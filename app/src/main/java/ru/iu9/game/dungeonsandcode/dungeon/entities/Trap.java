@@ -13,13 +13,13 @@ import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class Trap extends DungeonPart {
 
-    private static final int LEFT_DELTA = 64;
+    public static final int DELTA = 64;
 
     private TrapType mTrapType;
     private boolean mIsAnimated;
 
     public Trap(int left, int top, int right, int bottom, Resources resources, TrapType trapType) {
-        super(left - LEFT_DELTA, top, right - LEFT_DELTA, bottom);
+        super(left, top, right, bottom);
         mTrapType = trapType;
         mIsAnimated = false;
         mBackgroundImage = createBackgroundImage(resources);
@@ -61,29 +61,43 @@ public class Trap extends DungeonPart {
     }
 
     void startAnimation(final MoveAction trapMoveAction) {
-        final int startLeft = mLeft;
-        final int endLeft = mLeft + (mRight - mLeft) * 2 / 3;
+        switch (mTrapType) {
+            case LEFT:
+                startAnimation(trapMoveAction, mLeft, mLeft + (mRight - mLeft) * 2 / 3);
+                break;
+            case TOP:
+                startAnimation(trapMoveAction, mTop, mTop + (mBottom - mTop) * 2 / 3);
+                break;
+            case RIGHT:
+                startAnimation(trapMoveAction, mLeft, mLeft - (mRight - mLeft) * 2 / 3);
+                break;
+            case BOTTOM:
+                startAnimation(trapMoveAction, mTop, mTop - (mBottom - mTop) * 2 / 3);
+                break;
+        }
+    }
 
-        PropertyValuesHolder propertyLeft = PropertyValuesHolder.ofInt(
-                ANIMATION_PROPERTY_LEFT,
-                startLeft, endLeft
+    private void startAnimation(final MoveAction trapMoveAction, final int startValue, final int endValue) {
+        PropertyValuesHolder property = PropertyValuesHolder.ofInt(
+                ANIMATION_PROPERTY,
+                startValue, endValue
         );
 
         ValueAnimator trapAnimator = new ValueAnimator();
-        trapAnimator.setValues(propertyLeft);
+        trapAnimator.setValues(property);
         trapAnimator.setDuration(ANIMATION_DURATION);
 
         trapAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int currentLeft = (int) animation.getAnimatedValue(ANIMATION_PROPERTY_LEFT);
+                int currentValue = (int) animation.getAnimatedValue(ANIMATION_PROPERTY);
 
-                if (currentLeft == endLeft) {
-                    mLeft = startLeft;
+                if (currentValue == endValue) {
+                    setValue(startValue);
                     setAnimated(false);
                 } else {
-                    mLeft = currentLeft;
+                    setValue(currentValue);
                 }
 
                 trapMoveAction.moveCallback();
@@ -91,5 +105,18 @@ public class Trap extends DungeonPart {
         });
 
         trapAnimator.start();
+    }
+
+    private void setValue(int value) {
+        switch (mTrapType) {
+            case LEFT:
+            case RIGHT:
+                mLeft = value;
+                break;
+            case TOP:
+            case BOTTOM:
+                mTop = value;
+                break;
+        }
     }
 }

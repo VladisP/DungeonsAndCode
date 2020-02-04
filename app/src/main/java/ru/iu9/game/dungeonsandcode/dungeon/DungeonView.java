@@ -184,6 +184,18 @@ public class DungeonView extends View {
         }
     }
 
+    private int getLeftDelta(TrapType trapType) {
+        return trapType == TrapType.LEFT ? -Trap.DELTA
+                : trapType == TrapType.RIGHT ? Trap.DELTA
+                : 0;
+    }
+
+    private int getTopDelta(TrapType trapType) {
+        return trapType == TrapType.TOP ? -Trap.DELTA
+                : trapType == TrapType.BOTTOM ? Trap.DELTA
+                : 0;
+    }
+
     private Trap[] createTraps() {
         int trapsCount = mDungeonConfig.getTrapConfigs().length;
 
@@ -194,14 +206,15 @@ public class DungeonView extends View {
             PositionPair trapPosition = trapConfig.getTrapPosition();
 
             Floor startFloor = mFloors[trapPosition.getRowPosition()][trapPosition.getColumnPosition()];
+            TrapType trapType = convertToTrapType(trapConfig.getTrapType());
 
             traps[i] = new Trap(
-                    startFloor.getLeft(),
-                    startFloor.getTop(),
-                    startFloor.getRight(),
-                    startFloor.getBottom(),
+                    startFloor.getLeft() + getLeftDelta(trapType),
+                    startFloor.getTop() + getTopDelta(trapType),
+                    startFloor.getRight() + getLeftDelta(trapType),
+                    startFloor.getBottom() + getTopDelta(trapType),
                     getResources(),
-                    convertToTrapType(trapConfig.getTrapType())
+                    trapType
             );
 
             startFloor.setTrap(traps[i]);
