@@ -17,6 +17,8 @@ import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Monster;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.HeroMoveActions;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
@@ -25,6 +27,7 @@ public class DungeonView extends View {
     private static final int PADDING_MIN_SIZE = 24;
     private static final int FLOORS_ROW_COUNT = 8;
 
+    private DialogEventListener mDialogEventListener;
     private DungeonConfig mDungeonConfig;
     private Floor[][] mFloors;
     private Hero mHero;
@@ -39,7 +42,10 @@ public class DungeonView extends View {
 
     public DungeonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDungeonConfig = ((GameActivity) context).getDungeonConfig();
+        GameActivity gameActivity = (GameActivity) context;
+
+        mDungeonConfig = gameActivity.getDungeonConfig();
+        mDialogEventListener = gameActivity;
     }
 
     @Override
@@ -218,40 +224,38 @@ public class DungeonView extends View {
         }
     }
 
+    private HeroMoveActions makeHeroMoveActions(MoveAction onMoveEndAction) {
+        return new HeroMoveActions(
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        invalidate();
+                    }
+                },
+                onMoveEndAction,
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showLoseDialog();
+                    }
+                }
+        );
+    }
+
     public void moveHeroUp(MoveAction onMoveEndAction) {
-        mHero.moveUp(mFloors, onMoveEndAction, new MoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+        mHero.moveUp(mFloors, makeHeroMoveActions(onMoveEndAction));
     }
 
     public void moveHeroLeft(MoveAction onMoveEndAction) {
-        mHero.moveLeft(mFloors, onMoveEndAction, new MoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+        mHero.moveLeft(mFloors, makeHeroMoveActions(onMoveEndAction));
     }
 
     public void moveHeroRight(MoveAction onMoveEndAction) {
-        mHero.moveRight(mFloors, onMoveEndAction, new MoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+        mHero.moveRight(mFloors, makeHeroMoveActions(onMoveEndAction));
     }
 
     public void moveHeroDown(MoveAction onMoveEndAction) {
-        mHero.moveDown(mFloors, onMoveEndAction, new MoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+        mHero.moveDown(mFloors, makeHeroMoveActions(onMoveEndAction));
     }
 
     public void changeHeroDirection(HeroDirection heroDirection) {

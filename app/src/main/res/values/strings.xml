@@ -4,4 +4,5 @@
     <string name="ok">ОК</string>
     <string name="nesting_level">Уровень вложенности:</string>
     <string name="zero">0</string>
+    <string name="trap_message">Вы попали в ловушку :(</string>
 </resources>
