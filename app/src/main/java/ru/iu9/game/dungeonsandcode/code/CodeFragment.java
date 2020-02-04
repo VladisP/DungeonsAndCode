@@ -31,12 +31,14 @@ import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
 
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class CodeFragment extends Fragment implements CodeEditor {
 
     private HeroMoveListener mHeroMoveListener;
+    private DialogEventListener mDialogEventListener;
     private RecyclerView mCommandList;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
@@ -51,6 +53,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mHeroMoveListener = (HeroMoveListener) context;
+        mDialogEventListener = (DialogEventListener) context;
     }
 
     @Override
@@ -100,6 +103,13 @@ public class CodeFragment extends Fragment implements CodeEditor {
             }
         });
 
+        view.findViewById(R.id.restart_game_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialogEventListener.restartGame();
+            }
+        });
+
         mRunButton = view.findViewById(R.id.run_program_button);
         mRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +123,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void onDetach() {
         super.onDetach();
         mHeroMoveListener = null;
+        mDialogEventListener = null;
     }
 
     private void initCommandList(View view) {
