@@ -57,6 +57,11 @@ class Interpreter {
         }
     }
 
+    static void reset() {
+        sHeroDirection = HeroDirection.TOP;
+        sCurrentLine = 0;
+    }
+
     private static void onCommandEndAction(final List<CodeLine> program, final HeroMoveListener heroMoveListener, InterpreterActionListener interpreterActionListener) {
         sCurrentLine++;
         run(program, heroMoveListener, interpreterActionListener);

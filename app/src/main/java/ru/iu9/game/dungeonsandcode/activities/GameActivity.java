@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import ru.iu9.game.dungeonsandcode.DncApplication;
 import ru.iu9.game.dungeonsandcode.R;
+import ru.iu9.game.dungeonsandcode.code.CodeFragment;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
@@ -122,6 +123,13 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
 
         if (dungeonFragment != null) {
             dungeonFragment.restartGame();
+        }
+
+        CodeFragment codeFragment = (CodeFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.code_fragment_container);
+
+        if (codeFragment != null) {
+            codeFragment.reset();
         }
     }
 }

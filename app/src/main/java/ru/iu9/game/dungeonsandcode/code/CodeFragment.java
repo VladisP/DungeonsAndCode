@@ -267,6 +267,12 @@ public class CodeFragment extends Fragment implements CodeEditor {
         }
     }
 
+    public void reset() {
+        deleteProgram();
+        Interpreter.reset();
+        mRunButton.setEnabled(true);
+    }
+
     public interface HeroMoveListener {
         void moveUp(MoveAction onMoveEndAction);
 
