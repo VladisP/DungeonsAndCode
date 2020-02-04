@@ -114,4 +114,14 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
         LoseFragment loseDialog = new LoseFragment();
         loseDialog.show(getSupportFragmentManager(), DIALOG_TAG);
     }
+
+    @Override
+    public void restartGame() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.restartGame();
+        }
+    }
 }

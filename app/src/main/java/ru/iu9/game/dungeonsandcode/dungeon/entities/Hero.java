@@ -21,15 +21,17 @@ public class Hero extends DungeonPart {
 
     private static final int ANIMATION_FREQUENCY_FACTOR = 4;
 
-    private PositionPair mPositionPair;
+    private PositionPair mStartPosition;
+    private PositionPair mCurrentPosition;
     private HeroImages mHeroTopImages;
     private HeroImages mHeroRightImages;
     private HeroImages mHeroBotImages;
     private HeroImages mHeroLeftImages;
 
-    public Hero(int left, int top, int right, int bottom, Resources resources, PositionPair positionPair) {
+    public Hero(int left, int top, int right, int bottom, Resources resources, PositionPair position) {
         super(left, top, right, bottom);
-        mPositionPair = positionPair;
+        mStartPosition = new PositionPair(position.getRowPosition(), position.getColumnPosition());
+        mCurrentPosition = position;
         initHeroImages(resources);
         mBackgroundImage = createBackgroundImage(resources);
     }
@@ -132,55 +134,55 @@ public class Hero extends DungeonPart {
     }
 
     public void moveUp(Floor[][] floors, HeroMoveActions heroMoveActions) {
-        int rowPosition = mPositionPair.getRowPosition();
+        int rowPosition = mCurrentPosition.getRowPosition();
 
-        if (rowPosition == 0 || floors[rowPosition - 1][mPositionPair.getColumnPosition()].isWall()) {
+        if (rowPosition == 0 || floors[rowPosition - 1][mCurrentPosition.getColumnPosition()].isWall()) {
             heroMoveActions.moveEndAction();
             return;
         }
 
-        mPositionPair.setRowPosition(rowPosition - 1);
+        mCurrentPosition.setRowPosition(rowPosition - 1);
         bindWithFloor(floors, heroMoveActions, mHeroTopImages);
     }
 
     public void moveLeft(Floor[][] floors, HeroMoveActions heroMoveActions) {
-        int columnPosition = mPositionPair.getColumnPosition();
+        int columnPosition = mCurrentPosition.getColumnPosition();
 
-        if (columnPosition == 0 || floors[mPositionPair.getRowPosition()][columnPosition - 1].isWall()) {
+        if (columnPosition == 0 || floors[mCurrentPosition.getRowPosition()][columnPosition - 1].isWall()) {
             heroMoveActions.moveEndAction();
             return;
         }
 
-        mPositionPair.setColumnPosition(columnPosition - 1);
+        mCurrentPosition.setColumnPosition(columnPosition - 1);
         bindWithFloor(floors, heroMoveActions, mHeroLeftImages);
     }
 
     public void moveRight(Floor[][] floors, HeroMoveActions heroMoveActions) {
-        int columnPosition = mPositionPair.getColumnPosition();
+        int columnPosition = mCurrentPosition.getColumnPosition();
 
-        if (columnPosition == floors.length - 1 || floors[mPositionPair.getRowPosition()][columnPosition + 1].isWall()) {
+        if (columnPosition == floors.length - 1 || floors[mCurrentPosition.getRowPosition()][columnPosition + 1].isWall()) {
             heroMoveActions.moveEndAction();
             return;
         }
 
-        mPositionPair.setColumnPosition(columnPosition + 1);
+        mCurrentPosition.setColumnPosition(columnPosition + 1);
         bindWithFloor(floors, heroMoveActions, mHeroRightImages);
     }
 
     public void moveDown(Floor[][] floors, HeroMoveActions heroMoveActions) {
-        int rowPosition = mPositionPair.getRowPosition();
+        int rowPosition = mCurrentPosition.getRowPosition();
 
-        if (rowPosition == floors.length - 1 || floors[rowPosition + 1][mPositionPair.getColumnPosition()].isWall()) {
+        if (rowPosition == floors.length - 1 || floors[rowPosition + 1][mCurrentPosition.getColumnPosition()].isWall()) {
             heroMoveActions.moveEndAction();
             return;
         }
 
-        mPositionPair.setRowPosition(rowPosition + 1);
+        mCurrentPosition.setRowPosition(rowPosition + 1);
         bindWithFloor(floors, heroMoveActions, mHeroBotImages);
     }
 
     private void bindWithFloor(Floor[][] floors, final HeroMoveActions heroMoveActions, final HeroImages heroImages) {
-        final Floor heroFloor = floors[mPositionPair.getRowPosition()][mPositionPair.getColumnPosition()];
+        final Floor heroFloor = floors[mCurrentPosition.getRowPosition()][mCurrentPosition.getColumnPosition()];
 
         PropertyValuesHolder propertyTop = PropertyValuesHolder.ofInt(ANIMATION_PROPERTY_TOP, mTop, heroFloor.mTop);
         PropertyValuesHolder propertyRight = PropertyValuesHolder.ofInt(ANIMATION_PROPERTY_RIGHT, mRight, heroFloor.mRight);
@@ -250,5 +252,19 @@ public class Hero extends DungeonPart {
         }
 
         onChangeDirectionAction.moveCallback();
+    }
+
+    public void reset(Floor[][] floors) {
+        mCurrentPosition.setRowPosition(mStartPosition.getRowPosition());
+        mCurrentPosition.setColumnPosition(mStartPosition.getColumnPosition());
+
+        Floor heroFloor = floors[mCurrentPosition.getRowPosition()][mCurrentPosition.getColumnPosition()];
+
+        mTop = heroFloor.getTop();
+        mRight = heroFloor.getRight();
+        mBottom = heroFloor.getBottom();
+        mLeft = heroFloor.getLeft();
+
+        mBackgroundImage = mHeroTopImages.getStartImage();
     }
 }

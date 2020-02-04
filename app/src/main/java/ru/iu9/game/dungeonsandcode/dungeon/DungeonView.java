@@ -70,6 +70,12 @@ public class DungeonView extends View {
         mHero.draw(canvas);
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mDialogEventListener = null;
+    }
+
     private Bitmap createBackgroundImage(int width, int height) {
         return Bitmap.createScaledBitmap(
                 BitmapFactory.decodeResource(getResources(), R.drawable.scene_background),
@@ -265,6 +271,11 @@ public class DungeonView extends View {
                 invalidate();
             }
         });
+    }
+
+    public void restartGame() {
+        mHero.reset(mFloors);
+        invalidate();
     }
 
     public interface MoveAction {

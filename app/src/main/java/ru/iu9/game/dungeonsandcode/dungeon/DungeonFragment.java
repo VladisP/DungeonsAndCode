@@ -59,4 +59,8 @@ public class DungeonFragment extends Fragment {
     public void changeHeroDirection(HeroDirection heroDirection) {
         mDungeonView.changeHeroDirection(heroDirection);
     }
+
+    public void restartGame() {
+        mDungeonView.restartGame();
+    }
 }
