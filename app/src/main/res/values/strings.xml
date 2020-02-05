@@ -5,4 +5,9 @@
     <string name="nesting_level">Уровень вложенности:</string>
     <string name="zero">0</string>
     <string name="trap_message">Вы попали в ловушку :(</string>
+    <string name="trapleft">trapLeft</string>
+    <string name="traptop">trapTop</string>
+    <string name="trapright">trapRight</string>
+    <string name="trapbottom">trapBottom</string>
+    <string name="choose_trap_type">Укажите тип ловушки</string>
 </resources>

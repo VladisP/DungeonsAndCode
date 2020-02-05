@@ -62,4 +62,9 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
     public void clearNestingLevel() {
         mNestingLevel = 0;
     }
+
+    public void setCommandListItems(List<CommandListItem> commandListItems) {
+        mCommandListItems = commandListItems;
+        notifyDataSetChanged();
+    }
 }

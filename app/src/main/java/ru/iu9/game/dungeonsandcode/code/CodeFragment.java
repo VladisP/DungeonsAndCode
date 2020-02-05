@@ -23,15 +23,18 @@ import java.util.Objects;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.dialog.RepNumPickerFragment;
+import ru.iu9.game.dungeonsandcode.code.dialog.TrapTypePickerFragment;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
+import ru.iu9.game.dungeonsandcode.code.helpers.ProgramType;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
@@ -40,6 +43,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     private HeroMoveListener mHeroMoveListener;
     private DialogEventListener mDialogEventListener;
 
+    private ProgramType mOpenProgramType;
     private RecyclerView mCommandList;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
@@ -62,6 +66,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOpenProgramType = ProgramType.MAIN;
         createCommandListItems();
         createDefendCommandListItems();
     }
@@ -114,7 +119,23 @@ public class CodeFragment extends Fragment implements CodeEditor {
             }
         });
 
+        final ImageButton openProgramListButton = view.findViewById(R.id.open_dodge_list_button);
+
+        openProgramListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOpenProgramType == ProgramType.MAIN) {
+                    openDodgeList();
+                    openProgramListButton.setImageResource(R.drawable.ic_open_main_list_24dp);
+                } else if (mOpenProgramType == ProgramType.DODGE_SCRIPT) {
+                    openMainList();
+                    openProgramListButton.setImageResource(R.drawable.ic_open_dodge_list_24dp);
+                }
+            }
+        });
+
         mRunButton = view.findViewById(R.id.run_program_button);
+
         mRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +244,39 @@ public class CodeFragment extends Fragment implements CodeEditor {
         );
     }
 
+    private TrapType convertToTrapType(int type) {
+        switch (type) {
+            case 0:
+                return TrapType.LEFT;
+            case 1:
+                return TrapType.TOP;
+            case 2:
+                return TrapType.RIGHT;
+            case 3:
+                return TrapType.BOTTOM;
+            default:
+                return null;
+        }
+    }
+
+    private void addCondLine(Intent data, CommandType condCommand) {
+        int type = data.getIntExtra(TrapTypePickerFragment.EXTRA_TRAP_TYPE, 0);
+
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            addCodeLine(
+                    new CodeLine(
+                            condCommand,
+                            commandAdapter.getNestingLevel(),
+                            convertToTrapType(type)
+                    )
+            );
+
+            incNestingLevel();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode != Activity.RESULT_OK || data == null) {
@@ -238,6 +292,10 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 addCodeLine(new CodeLine(CommandType.REPEAT, commandAdapter.getNestingLevel(), repNum));
                 incNestingLevel();
             }
+        } else if (requestCode == CommandHolder.REQUEST_IF_TRAP_TYPE) {
+            addCondLine(data, CommandType.IF);
+        } else if (requestCode == CommandHolder.REQUEST_ELIF_TRAP_TYPE) {
+            addCondLine(data, CommandType.ELIF);
         }
     }
 
@@ -326,6 +384,24 @@ public class CodeFragment extends Fragment implements CodeEditor {
         if (commandAdapter != null) {
             commandAdapter.clearNestingLevel();
             mNestingLevelTextView.setText(String.format(Locale.US, "%d", 0));
+        }
+    }
+
+    private void openMainList() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            mOpenProgramType = ProgramType.MAIN;
+            commandAdapter.setCommandListItems(mCommandListItems);
+        }
+    }
+
+    private void openDodgeList() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+
+        if (commandAdapter != null) {
+            mOpenProgramType = ProgramType.DODGE_SCRIPT;
+            commandAdapter.setCommandListItems(mDefendCommandListItems);
         }
     }
 
