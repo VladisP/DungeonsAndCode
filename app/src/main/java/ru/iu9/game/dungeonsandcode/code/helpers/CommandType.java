@@ -4,5 +4,12 @@ public enum CommandType {
     MOVE,
     TURN_RIGHT,
     TURN_LEFT,
-    REPEAT
+    REPEAT,
+    IF,
+    ELIF,
+    ELSE,
+    DODGE_LEFT,
+    DODGE_TOP,
+    DODGE_RIGHT,
+    DODGE_BOTTOM
 }

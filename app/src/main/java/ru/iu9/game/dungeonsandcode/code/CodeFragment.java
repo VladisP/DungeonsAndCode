@@ -39,9 +39,12 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
     private HeroMoveListener mHeroMoveListener;
     private DialogEventListener mDialogEventListener;
+
     private RecyclerView mCommandList;
     private RecyclerView mCodeList;
     private List<CommandListItem> mCommandListItems;
+    private List<CommandListItem> mDefendCommandListItems;
+
     private ImageButton mRunButton;
     private TextView mNestingLevelTextView;
 
@@ -60,6 +63,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createCommandListItems();
+        createDefendCommandListItems();
     }
 
     @Nullable
@@ -168,6 +172,53 @@ public class CodeFragment extends Fragment implements CodeEditor {
                 new CommandListItem(
                         R.drawable.ic_command_repeat_black_24dp,
                         CommandType.REPEAT
+                )
+        );
+    }
+
+    private void createDefendCommandListItems() {
+        mDefendCommandListItems = new ArrayList<>();
+
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_if,
+                        CommandType.IF
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_elif,
+                        CommandType.ELIF
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_else,
+                        CommandType.ELSE
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_dodge_left_24dp,
+                        CommandType.DODGE_LEFT
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_dodge_top_24dp,
+                        CommandType.DODGE_TOP
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_dodge_right_24dp,
+                        CommandType.DODGE_RIGHT
+                )
+        );
+        mDefendCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_dodge_bottom_24dp,
+                        CommandType.DODGE_BOTTOM
                 )
         );
     }
