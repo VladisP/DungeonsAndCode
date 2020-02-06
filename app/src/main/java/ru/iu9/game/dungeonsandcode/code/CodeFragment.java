@@ -164,7 +164,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         mCodeList.setLayoutManager(layoutManager);
-        mCodeList.setAdapter(new CodeAdapter(getContext(), this, new ArrayList<CodeLine>()));
+        mCodeList.setAdapter(new CodeAdapter(getContext(), this));
         Objects.requireNonNull(mCodeList.getItemAnimator()).setRemoveDuration(0L);
     }
 
@@ -327,7 +327,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
         if (codeAdapter != null) {
             mRunButton.setEnabled(false);
 
-            Interpreter.run(codeAdapter.getProgram(), mHeroMoveListener, new InterpreterActionListener() {
+            Interpreter.run(codeAdapter.getMainProgram(), mHeroMoveListener, new InterpreterActionListener() {
                 @Override
                 public void onInterpretationFinished() {
                     mRunButton.setEnabled(true);
@@ -387,21 +387,34 @@ public class CodeFragment extends Fragment implements CodeEditor {
         }
     }
 
+    @Override
+    public ProgramType getEditProgramType() {
+        return mOpenProgramType;
+    }
+
     private void openMainList() {
         CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (commandAdapter != null) {
+        if (commandAdapter != null && codeAdapter != null) {
             mOpenProgramType = ProgramType.MAIN;
+
+            codeAdapter.notifyDataSetChanged();
             commandAdapter.setCommandListItems(mCommandListItems);
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
         }
     }
 
     private void openDodgeList() {
         CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (commandAdapter != null) {
+        if (commandAdapter != null && codeAdapter != null) {
             mOpenProgramType = ProgramType.DODGE_SCRIPT;
+
+            codeAdapter.notifyDataSetChanged();
             commandAdapter.setCommandListItems(mDefendCommandListItems);
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
         }
     }
 

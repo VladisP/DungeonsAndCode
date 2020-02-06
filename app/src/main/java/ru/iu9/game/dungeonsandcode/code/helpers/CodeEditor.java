@@ -16,4 +16,6 @@ public interface CodeEditor {
     void decNestingLevel();
 
     void clearNestingLevel();
+
+    ProgramType getEditProgramType();
 }

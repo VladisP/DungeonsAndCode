@@ -13,19 +13,22 @@ import java.util.List;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
+import ru.iu9.game.dungeonsandcode.code.helpers.ProgramType;
 
 public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
 
     private Context mContext;
     private CodeEditor mCodeEditor;
     private List<CommandListItem> mCommandListItems;
-    private int mNestingLevel;
+    private int mMainNestingLevel;
+    private int mDodgeScriptNestingLevel;
 
     public CommandAdapter(Context context, CodeEditor codeEditor, List<CommandListItem> items) {
         mContext = context;
         mCodeEditor = codeEditor;
         mCommandListItems = items;
-        mNestingLevel = 0;
+        mMainNestingLevel = 0;
+        mDodgeScriptNestingLevel = 0;
     }
 
     @NonNull
@@ -47,20 +50,48 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
         return mCommandListItems.size();
     }
 
+    private int getCurrentNestingLevel() {
+        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ? mMainNestingLevel : mDodgeScriptNestingLevel;
+    }
+
+    private void incCurrentNestingLevel() {
+        if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
+            mMainNestingLevel++;
+        } else {
+            mDodgeScriptNestingLevel++;
+        }
+    }
+
+    private void decCurrentNestingLevel() {
+        if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
+            mMainNestingLevel--;
+        } else {
+            mDodgeScriptNestingLevel--;
+        }
+    }
+
+    private void clearCurrentNestingLevel() {
+        if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
+            mMainNestingLevel = 0;
+        } else {
+            mDodgeScriptNestingLevel = 0;
+        }
+    }
+
     public int getNestingLevel() {
-        return mNestingLevel;
+        return getCurrentNestingLevel();
     }
 
     public void incNestingLevel() {
-        mNestingLevel++;
+        incCurrentNestingLevel();
     }
 
     public void decNestingLevel() {
-        mNestingLevel--;
+        decCurrentNestingLevel();
     }
 
     public void clearNestingLevel() {
-        mNestingLevel = 0;
+        clearCurrentNestingLevel();
     }
 
     public void setCommandListItems(List<CommandListItem> commandListItems) {
