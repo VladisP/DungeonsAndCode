@@ -320,11 +320,16 @@ public class CodeFragment extends Fragment implements CodeEditor {
         }
     }
 
+    private boolean isSyntaxCorrect(CodeAdapter codeAdapter) {
+        return Parser.parseMain(codeAdapter.getMainProgram()) &&
+                Parser.parseDodgeScript(codeAdapter.getDodgeScript());
+    }
+
     @Override
     public void runProgram() {
         CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (codeAdapter != null && Parser.parseMain(codeAdapter.getMainProgram())) {
+        if (codeAdapter != null && isSyntaxCorrect(codeAdapter)) {
             mRunButton.setEnabled(false);
 
             Interpreter.run(codeAdapter.getMainProgram(), mHeroMoveListener, new InterpreterActionListener() {

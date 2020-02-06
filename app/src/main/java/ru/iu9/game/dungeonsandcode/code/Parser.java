@@ -17,6 +17,13 @@ class Parser {
         return parseProgram(program, false);
     }
 
+    static boolean parseDodgeScript(List<CodeLine> script) {
+        currentLineNum = 0;
+        currentNestLevel = 0;
+
+        return parseScript(script);
+    }
+
     private static boolean parseProgram(List<CodeLine> program, boolean isRepeatBody) {
         if (currentLineNum >= program.size()) {
             return true;
@@ -58,5 +65,105 @@ class Parser {
         currentNestLevel--;
 
         return isCorrect;
+    }
+
+    private static boolean parseScript(List<CodeLine> script) {
+        if (currentLineNum >= script.size()) {
+            return true;
+        }
+
+        CodeLine codeLine = script.get(currentLineNum);
+
+        if (codeLine.getNestingLevel() != currentNestLevel) {
+            return false;
+        }
+
+        if (isPrimaryDodgeCommand(codeLine.getCommandType())) {
+            currentLineNum++;
+
+            return parseScript(script);
+        }
+
+        if (codeLine.getCommandType() == CommandType.IF) {
+            if (!parseCond(script)) {
+                return false;
+            }
+
+            return parseScript(script);
+        }
+
+        return false;
+    }
+
+    private static boolean isPrimaryDodgeCommand(CommandType type) {
+        return type == CommandType.DODGE_LEFT ||
+                type == CommandType.DODGE_TOP ||
+                type == CommandType.DODGE_RIGHT ||
+                type == CommandType.DODGE_BOTTOM;
+    }
+
+    private static boolean parseCond(List<CodeLine> script) {
+        currentLineNum++;
+        currentNestLevel++;
+
+        if (!parseCondBody(script)) {
+            return false;
+        }
+
+        currentNestLevel--;
+
+        return parseElifCond(script);
+    }
+
+    private static boolean parseCondBody(List<CodeLine> script) {
+        if (currentLineNum >= script.size()) {
+            return true;
+        }
+
+        CodeLine codeLine = script.get(currentLineNum);
+
+        if (codeLine.getNestingLevel() != currentNestLevel) {
+            return codeLine.getNestingLevel() < currentNestLevel;
+        }
+
+        if (isPrimaryDodgeCommand(codeLine.getCommandType())) {
+            currentLineNum++;
+
+            return parseCondBody(script);
+        }
+
+        return false;
+    }
+
+    private static boolean parseElifCond(List<CodeLine> script) {
+        if (currentLineNum >= script.size() || script.get(currentLineNum).getCommandType() != CommandType.ELIF) {
+            return parseElseCond(script);
+        }
+
+        currentLineNum++;
+        currentNestLevel++;
+
+        if (!parseCondBody(script)) {
+            return false;
+        }
+
+        currentNestLevel--;
+
+        return parseElifCond(script);
+    }
+
+    private static boolean parseElseCond(List<CodeLine> script) {
+        if (currentLineNum >= script.size() || script.get(currentLineNum).getCommandType() != CommandType.ELSE) {
+            return true;
+        }
+
+        currentLineNum++;
+        currentNestLevel++;
+
+        boolean isCorrectBody = parseCondBody(script);
+
+        currentNestLevel--;
+
+        return isCorrectBody;
     }
 }
