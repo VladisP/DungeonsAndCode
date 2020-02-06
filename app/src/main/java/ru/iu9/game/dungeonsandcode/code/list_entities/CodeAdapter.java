@@ -60,8 +60,15 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
         getCurrentCodeLines().add(codeLine);
     }
 
+    private boolean isControlStructure(CommandType type) {
+        return type == CommandType.REPEAT ||
+                type == CommandType.IF ||
+                type == CommandType.ELIF ||
+                type == CommandType.ELSE;
+    }
+
     public void removeLastLine() {
-        if (getCurrentCodeLines().get(getItemCount() - 1).getCommandType() == CommandType.REPEAT) {
+        if (isControlStructure(getCurrentCodeLines().get(getItemCount() - 1).getCommandType())) {
             mCodeEditor.decNestingLevel();
         }
 
