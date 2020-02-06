@@ -418,8 +418,32 @@ public class CodeFragment extends Fragment implements CodeEditor {
         }
     }
 
+    private void resetScript(CodeAdapter codeAdapter) {
+        if (codeAdapter.getItemCount() > 0) {
+            codeAdapter.removeAllLines();
+        }
+
+        clearNestingLevel();
+    }
+
+    private void resetAllScripts() {
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
+        ProgramType currentProgramType = mOpenProgramType;
+
+        if (codeAdapter != null) {
+            mOpenProgramType = ProgramType.MAIN;
+            resetScript(codeAdapter);
+
+            mOpenProgramType = ProgramType.DODGE_SCRIPT;
+            resetScript(codeAdapter);
+
+            mOpenProgramType = currentProgramType;
+            codeAdapter.notifyDataSetChanged();
+        }
+    }
+
     public void reset() {
-        deleteProgram();
+        resetAllScripts();
         Interpreter.reset();
         mRunButton.setEnabled(true);
     }
