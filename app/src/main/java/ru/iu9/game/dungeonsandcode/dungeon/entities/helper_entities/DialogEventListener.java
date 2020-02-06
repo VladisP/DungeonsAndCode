@@ -4,4 +4,6 @@ public interface DialogEventListener {
     void showLoseDialog();
 
     void restartGame();
+
+    void showErrorMessage(String msg);
 }

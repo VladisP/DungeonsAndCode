@@ -1,6 +1,7 @@
 package ru.iu9.game.dungeonsandcode.activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -131,5 +132,10 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
         if (codeFragment != null) {
             codeFragment.reset();
         }
+    }
+
+    @Override
+    public void showErrorMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

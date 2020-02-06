@@ -324,7 +324,7 @@ public class CodeFragment extends Fragment implements CodeEditor {
     public void runProgram() {
         CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
-        if (codeAdapter != null) {
+        if (codeAdapter != null && Parser.parseMain(codeAdapter.getMainProgram())) {
             mRunButton.setEnabled(false);
 
             Interpreter.run(codeAdapter.getMainProgram(), mHeroMoveListener, new InterpreterActionListener() {
@@ -333,6 +333,8 @@ public class CodeFragment extends Fragment implements CodeEditor {
                     mRunButton.setEnabled(true);
                 }
             });
+        } else {
+            mDialogEventListener.showErrorMessage(getString(R.string.syntax_error));
         }
     }
 
