@@ -25,6 +25,10 @@ public class Trap extends DungeonPart {
         mBackgroundImage = createBackgroundImage(resources);
     }
 
+    TrapType getTrapType() {
+        return mTrapType;
+    }
+
     boolean isAnimated() {
         return mIsAnimated;
     }

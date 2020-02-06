@@ -95,7 +95,7 @@ class Parser {
         return false;
     }
 
-    private static boolean isPrimaryDodgeCommand(CommandType type) {
+    static boolean isPrimaryDodgeCommand(CommandType type) {
         return type == CommandType.DODGE_LEFT ||
                 type == CommandType.DODGE_TOP ||
                 type == CommandType.DODGE_RIGHT ||

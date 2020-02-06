@@ -36,6 +36,7 @@ import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.DodgeAction;
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class CodeFragment extends Fragment implements CodeEditor {
@@ -327,17 +328,27 @@ public class CodeFragment extends Fragment implements CodeEditor {
 
     @Override
     public void runProgram() {
-        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
+        final CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
 
         if (codeAdapter != null && isSyntaxCorrect(codeAdapter)) {
             mRunButton.setEnabled(false);
 
-            Interpreter.run(codeAdapter.getMainProgram(), mHeroMoveListener, new InterpreterActionListener() {
-                @Override
-                public void onInterpretationFinished() {
-                    mRunButton.setEnabled(true);
-                }
-            });
+            Interpreter.run(
+                    codeAdapter.getMainProgram(),
+                    mHeroMoveListener,
+                    new DodgeAction() {
+                        @Override
+                        public boolean isDodge(TrapType trapType) {
+                            return Interpreter.isDodged(trapType, codeAdapter.getDodgeScript());
+                        }
+                    },
+                    new InterpreterActionListener() {
+                        @Override
+                        public void onInterpretationFinished() {
+                            mRunButton.setEnabled(true);
+                        }
+                    }
+            );
         } else {
             mDialogEventListener.showErrorMessage(getString(R.string.syntax_error));
         }
@@ -456,13 +467,13 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     public interface HeroMoveListener {
-        void moveUp(MoveAction onMoveEndAction);
+        void moveUp(MoveAction onMoveEndAction, DodgeAction dodgeAction);
 
-        void moveLeft(MoveAction onMoveEndAction);
+        void moveLeft(MoveAction onMoveEndAction, DodgeAction dodgeAction);
 
-        void moveRight(MoveAction onMoveEndAction);
+        void moveRight(MoveAction onMoveEndAction, DodgeAction dodgeAction);
 
-        void moveDown(MoveAction onMoveEndAction);
+        void moveDown(MoveAction onMoveEndAction, DodgeAction dodgeAction);
 
         void changeDirection(HeroDirection heroDirection);
     }

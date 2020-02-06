@@ -19,6 +19,7 @@ import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventL
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.newInstance;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.DodgeAction;
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class GameActivity extends AppCompatActivity implements HeroMoveListener, DialogEventListener {
@@ -62,42 +63,42 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
     }
 
     @Override
-    public void moveUp(MoveAction onMoveEndAction) {
+    public void moveUp(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroUp(onMoveEndAction);
+            dungeonFragment.moveHeroUp(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveLeft(MoveAction onMoveEndAction) {
+    public void moveLeft(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroLeft(onMoveEndAction);
+            dungeonFragment.moveHeroLeft(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveRight(MoveAction onMoveEndAction) {
+    public void moveRight(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroRight(onMoveEndAction);
+            dungeonFragment.moveHeroRight(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveDown(MoveAction onMoveEndAction) {
+    public void moveDown(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroDown(onMoveEndAction);
+            dungeonFragment.moveHeroDown(onMoveEndAction, dodgeAction);
         }
     }
 

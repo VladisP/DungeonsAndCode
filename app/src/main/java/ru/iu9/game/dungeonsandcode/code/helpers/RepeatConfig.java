@@ -4,6 +4,7 @@ import java.util.List;
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.InterpreterActionListener;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.DodgeAction;
 
 public class RepeatConfig {
 
@@ -12,6 +13,7 @@ public class RepeatConfig {
     private int mStartLine;
     private List<CodeLine> mProgram;
     private HeroMoveListener mMoveListener;
+    private DodgeAction mDodgeAction;
     private InterpreterActionListener mInterpreterActionListener;
 
     public RepeatConfig(
@@ -20,6 +22,7 @@ public class RepeatConfig {
             int startLine,
             List<CodeLine> program,
             HeroMoveListener moveListener,
+            DodgeAction dodgeAction,
             InterpreterActionListener interpreterActionListener
     ) {
         mRepNum = repNum;
@@ -27,6 +30,7 @@ public class RepeatConfig {
         mStartLine = startLine;
         mProgram = program;
         mMoveListener = moveListener;
+        mDodgeAction = dodgeAction;
         mInterpreterActionListener = interpreterActionListener;
     }
 
@@ -48,6 +52,10 @@ public class RepeatConfig {
 
     public HeroMoveListener getMoveListener() {
         return mMoveListener;
+    }
+
+    public DodgeAction getDodgeAction() {
+        return mDodgeAction;
     }
 
     public InterpreterActionListener getInterpreterActionListener() {

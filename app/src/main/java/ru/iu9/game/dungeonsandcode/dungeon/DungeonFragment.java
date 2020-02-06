@@ -40,20 +40,20 @@ public class DungeonFragment extends Fragment {
         mDungeonView = null;
     }
 
-    public void moveHeroUp(MoveAction onMoveEndAction) {
-        mDungeonView.moveHeroUp(onMoveEndAction);
+    public void moveHeroUp(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mDungeonView.moveHeroUp(onMoveEndAction, dodgeAction);
     }
 
-    public void moveHeroLeft(MoveAction onMoveEndAction) {
-        mDungeonView.moveHeroLeft(onMoveEndAction);
+    public void moveHeroLeft(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mDungeonView.moveHeroLeft(onMoveEndAction, dodgeAction);
     }
 
-    public void moveHeroRight(MoveAction onMoveEndAction) {
-        mDungeonView.moveHeroRight(onMoveEndAction);
+    public void moveHeroRight(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mDungeonView.moveHeroRight(onMoveEndAction, dodgeAction);
     }
 
-    public void moveHeroDown(MoveAction onMoveEndAction) {
-        mDungeonView.moveHeroDown(onMoveEndAction);
+    public void moveHeroDown(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mDungeonView.moveHeroDown(onMoveEndAction, dodgeAction);
     }
 
     public void changeHeroDirection(HeroDirection heroDirection) {

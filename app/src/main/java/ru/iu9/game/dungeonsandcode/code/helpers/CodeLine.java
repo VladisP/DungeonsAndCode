@@ -121,6 +121,10 @@ public class CodeLine {
         return mRepNum;
     }
 
+    public TrapType getTrapType() {
+        return mTrapType;
+    }
+
     public String getLineText() {
         return mLineText;
     }

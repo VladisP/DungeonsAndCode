@@ -4,19 +4,28 @@ import java.util.List;
 import java.util.Stack;
 
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
+import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.helpers.RepeatConfig;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
-import static ru.iu9.game.dungeonsandcode.code.CodeFragment.*;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
+import static ru.iu9.game.dungeonsandcode.code.CodeFragment.InterpreterActionListener;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.DodgeAction;
 import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 class Interpreter {
 
     private static HeroDirection sHeroDirection = HeroDirection.TOP;
     private static int sCurrentLine = 0;
+    private static int sDodgeCurrentLineNum = 0;
 
-    static void run(final List<CodeLine> program, final HeroMoveListener heroMoveListener, final InterpreterActionListener interpreterActionListener) {
+    static void run(
+            final List<CodeLine> program,
+            final HeroMoveListener heroMoveListener,
+            final DodgeAction dodgeAction,
+            final InterpreterActionListener interpreterActionListener
+    ) {
         if (sCurrentLine >= program.size()) {
             sCurrentLine = 0;
             interpreterActionListener.onInterpretationFinished();
@@ -27,20 +36,24 @@ class Interpreter {
 
         switch (currentLine.getCommandType()) {
             case MOVE:
-                move(heroMoveListener, new MoveAction() {
-                    @Override
-                    public void moveCallback() {
-                        onCommandEndAction(program, heroMoveListener, interpreterActionListener);
-                    }
-                });
+                move(
+                        heroMoveListener,
+                        new MoveAction() {
+                            @Override
+                            public void moveCallback() {
+                                onCommandEndAction(program, heroMoveListener, dodgeAction, interpreterActionListener);
+                            }
+                        },
+                        dodgeAction
+                );
                 break;
             case TURN_LEFT:
                 turnLeft(heroMoveListener);
-                onCommandEndAction(program, heroMoveListener, interpreterActionListener);
+                onCommandEndAction(program, heroMoveListener, dodgeAction, interpreterActionListener);
                 break;
             case TURN_RIGHT:
                 turnRight(heroMoveListener);
-                onCommandEndAction(program, heroMoveListener, interpreterActionListener);
+                onCommandEndAction(program, heroMoveListener, dodgeAction, interpreterActionListener);
                 break;
             case REPEAT:
                 RepeatConfig mainConfig = new RepeatConfig(
@@ -49,6 +62,7 @@ class Interpreter {
                         ++sCurrentLine,
                         program,
                         heroMoveListener,
+                        dodgeAction,
                         interpreterActionListener
                 );
 
@@ -60,26 +74,32 @@ class Interpreter {
     static void reset() {
         sHeroDirection = HeroDirection.TOP;
         sCurrentLine = 0;
+        sDodgeCurrentLineNum = 0;
     }
 
-    private static void onCommandEndAction(final List<CodeLine> program, final HeroMoveListener heroMoveListener, InterpreterActionListener interpreterActionListener) {
+    private static void onCommandEndAction(
+            final List<CodeLine> program,
+            final HeroMoveListener heroMoveListener,
+            final DodgeAction dodgeAction,
+            InterpreterActionListener interpreterActionListener
+    ) {
         sCurrentLine++;
-        run(program, heroMoveListener, interpreterActionListener);
+        run(program, heroMoveListener, dodgeAction, interpreterActionListener);
     }
 
-    private static void move(HeroMoveListener heroMoveListener, MoveAction onMoveEndAction) {
+    private static void move(HeroMoveListener heroMoveListener, MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         switch (sHeroDirection) {
             case TOP:
-                heroMoveListener.moveUp(onMoveEndAction);
+                heroMoveListener.moveUp(onMoveEndAction, dodgeAction);
                 break;
             case RIGHT:
-                heroMoveListener.moveRight(onMoveEndAction);
+                heroMoveListener.moveRight(onMoveEndAction, dodgeAction);
                 break;
             case BOTTOM:
-                heroMoveListener.moveDown(onMoveEndAction);
+                heroMoveListener.moveDown(onMoveEndAction, dodgeAction);
                 break;
             case LEFT:
-                heroMoveListener.moveLeft(onMoveEndAction);
+                heroMoveListener.moveLeft(onMoveEndAction, dodgeAction);
                 break;
         }
     }
@@ -141,12 +161,18 @@ class Interpreter {
                                 mainConfig.getStartLine(),
                                 mainConfig.getProgram(),
                                 mainConfig.getMoveListener(),
+                                mainConfig.getDodgeAction(),
                                 mainConfig.getInterpreterActionListener()
                         ),
                         outerConfigs
                 );
             } else if (mainConfig.getNestLevel() == 1) {
-                run(mainConfig.getProgram(), mainConfig.getMoveListener(), mainConfig.getInterpreterActionListener());
+                run(
+                        mainConfig.getProgram(),
+                        mainConfig.getMoveListener(),
+                        mainConfig.getDodgeAction(),
+                        mainConfig.getInterpreterActionListener()
+                );
             } else if (mainConfig.getNestLevel() > 1) {
                 RepeatConfig outerConfig = outerConfigs.pop();
 
@@ -157,6 +183,7 @@ class Interpreter {
                                 outerConfig.getStartLine(),
                                 outerConfig.getProgram(),
                                 outerConfig.getMoveListener(),
+                                outerConfig.getDodgeAction(),
                                 outerConfig.getInterpreterActionListener()
                         ),
                         outerConfigs
@@ -170,12 +197,16 @@ class Interpreter {
 
         switch (currentLine.getCommandType()) {
             case MOVE:
-                move(mainConfig.getMoveListener(), new MoveAction() {
-                    @Override
-                    public void moveCallback() {
-                        onRepeatCommandEndAction(mainConfig, outerConfigs);
-                    }
-                });
+                move(
+                        mainConfig.getMoveListener(),
+                        new MoveAction() {
+                            @Override
+                            public void moveCallback() {
+                                onRepeatCommandEndAction(mainConfig, outerConfigs);
+                            }
+                        },
+                        mainConfig.getDodgeAction()
+                );
                 break;
             case TURN_LEFT:
                 turnLeft(mainConfig.getMoveListener());
@@ -195,6 +226,7 @@ class Interpreter {
                                 ++sCurrentLine,
                                 mainConfig.getProgram(),
                                 mainConfig.getMoveListener(),
+                                mainConfig.getDodgeAction(),
                                 mainConfig.getInterpreterActionListener()
                         ),
                         outerConfigs
@@ -206,5 +238,76 @@ class Interpreter {
     private static void onRepeatCommandEndAction(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
         sCurrentLine++;
         repeat(mainConfig, outerConfigs);
+    }
+
+    private static CodeLine peekDodgeCodeLine(List<CodeLine> dodgeScript) {
+        return sDodgeCurrentLineNum >= dodgeScript.size() ? null : dodgeScript.get(sDodgeCurrentLineNum);
+    }
+
+    static boolean isDodged(TrapType trapType, List<CodeLine> dodgeScript) {
+        sDodgeCurrentLineNum = 0;
+
+        return isDodgedHelper(trapType, dodgeScript);
+    }
+
+    private static boolean isDodgedHelper(TrapType trapType, List<CodeLine> dodgeScript) {
+        CodeLine dodgeLine = peekDodgeCodeLine(dodgeScript);
+
+        if (dodgeLine == null) {
+            return false;
+        }
+
+        if (Parser.isPrimaryDodgeCommand(dodgeLine.getCommandType())) {
+            return isDodged(trapType, dodgeLine.getCommandType());
+        }
+
+        if (dodgeLine.getTrapType() == trapType) {
+            return checkCondBody(trapType, dodgeScript);
+        }
+
+        return checkScriptTail(trapType, dodgeScript);
+    }
+
+    private static boolean isDodged(TrapType trapType, CommandType commandType) {
+        return (trapType == TrapType.LEFT && commandType == CommandType.DODGE_LEFT) ||
+                (trapType == TrapType.TOP && commandType == CommandType.DODGE_TOP) ||
+                (trapType == TrapType.RIGHT && commandType == CommandType.DODGE_RIGHT) ||
+                (trapType == TrapType.BOTTOM && commandType == CommandType.DODGE_BOTTOM);
+    }
+
+    private static boolean checkCondBody(TrapType trapType, List<CodeLine> dodgeScript) {
+        sDodgeCurrentLineNum++;
+
+        CodeLine condBodyFirstLine = peekDodgeCodeLine(dodgeScript);
+
+        return condBodyFirstLine != null &&
+                condBodyFirstLine.getNestingLevel() == 1 &&
+                isDodged(trapType, condBodyFirstLine.getCommandType());
+    }
+
+    private static boolean checkScriptTail(TrapType trapType, List<CodeLine> dodgeScript) {
+        sDodgeCurrentLineNum++;
+        CodeLine dodgeLine = peekDodgeCodeLine(dodgeScript);
+
+        while (dodgeLine != null && dodgeLine.getNestingLevel() == 1) {
+            sDodgeCurrentLineNum++;
+            dodgeLine = peekDodgeCodeLine(dodgeScript);
+        }
+
+        if (dodgeLine == null) {
+            return false;
+        }
+
+        if (dodgeLine.getCommandType() == CommandType.ELIF && dodgeLine.getTrapType() == trapType) {
+            return checkCondBody(trapType, dodgeScript);
+        } else if (dodgeLine.getCommandType() == CommandType.ELIF) {
+            return checkScriptTail(trapType, dodgeScript);
+        }
+
+        if (dodgeLine.getCommandType() == CommandType.ELSE) {
+            return checkCondBody(trapType, dodgeScript);
+        }
+
+        return isDodgedHelper(trapType, dodgeScript);
     }
 }
