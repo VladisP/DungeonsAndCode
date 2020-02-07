@@ -5,6 +5,7 @@ public enum CommandType {
     TURN_RIGHT,
     TURN_LEFT,
     REPEAT,
+    SUBROUTINE,
     IF,
     ELIF,
     ELSE,

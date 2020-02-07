@@ -196,6 +196,12 @@ public class CodeFragment extends Fragment implements CodeEditor {
                         CommandType.REPEAT
                 )
         );
+        mCommandListItems.add(
+                new CommandListItem(
+                        R.drawable.ic_command_subroutine,
+                        CommandType.SUBROUTINE
+                )
+        );
     }
 
     private void createDefendCommandListItems() {
