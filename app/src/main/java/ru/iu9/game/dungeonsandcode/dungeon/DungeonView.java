@@ -273,6 +273,18 @@ public class DungeonView extends View {
                         mDialogEventListener.showEndgameDialog(R.string.treasure_message);
                     }
                 },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.wall_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.lava_message);
+                    }
+                },
                 dodgeAction
         );
     }

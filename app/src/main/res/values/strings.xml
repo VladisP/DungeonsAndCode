@@ -7,6 +7,8 @@
     <string name="trap_message">Вы попали в ловушку :(</string>
     <string name="monster_message">Вы пали от руки скелета :(</string>
     <string name="treasure_message">Победа! Вы нашли сокровище :)</string>
+    <string name="wall_message">Вы расшиблись об стену :(</string>
+    <string name="lava_message">Вы упали в лаву :(</string>
     <string name="trapleft">trapLeft</string>
     <string name="traptop">trapTop</string>
     <string name="trapright">trapRight</string>

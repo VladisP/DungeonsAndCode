@@ -136,8 +136,13 @@ public class Hero extends DungeonPart {
     public void moveUp(Floor[][] floors, HeroActions heroActions) {
         int rowPosition = mCurrentPosition.getRowPosition();
 
-        if (rowPosition == 0 || floors[rowPosition - 1][mCurrentPosition.getColumnPosition()].isWall()) {
-            heroActions.moveEndAction();
+        if (rowPosition == 0) {
+            heroActions.moveToLavaAction();
+            return;
+        }
+
+        if (floors[rowPosition - 1][mCurrentPosition.getColumnPosition()].isWall()) {
+            heroActions.moveToWallAction();
             return;
         }
 
@@ -148,8 +153,13 @@ public class Hero extends DungeonPart {
     public void moveLeft(Floor[][] floors, HeroActions heroActions) {
         int columnPosition = mCurrentPosition.getColumnPosition();
 
-        if (columnPosition == 0 || floors[mCurrentPosition.getRowPosition()][columnPosition - 1].isWall()) {
-            heroActions.moveEndAction();
+        if (columnPosition == 0) {
+            heroActions.moveToLavaAction();
+            return;
+        }
+
+        if (floors[mCurrentPosition.getRowPosition()][columnPosition - 1].isWall()) {
+            heroActions.moveToWallAction();
             return;
         }
 
@@ -160,8 +170,13 @@ public class Hero extends DungeonPart {
     public void moveRight(Floor[][] floors, HeroActions heroActions) {
         int columnPosition = mCurrentPosition.getColumnPosition();
 
-        if (columnPosition == floors.length - 1 || floors[mCurrentPosition.getRowPosition()][columnPosition + 1].isWall()) {
-            heroActions.moveEndAction();
+        if (columnPosition == floors.length - 1) {
+            heroActions.moveToLavaAction();
+            return;
+        }
+
+        if (floors[mCurrentPosition.getRowPosition()][columnPosition + 1].isWall()) {
+            heroActions.moveToWallAction();
             return;
         }
 
@@ -172,8 +187,13 @@ public class Hero extends DungeonPart {
     public void moveDown(Floor[][] floors, HeroActions heroActions) {
         int rowPosition = mCurrentPosition.getRowPosition();
 
-        if (rowPosition == floors.length - 1 || floors[rowPosition + 1][mCurrentPosition.getColumnPosition()].isWall()) {
-            heroActions.moveEndAction();
+        if (rowPosition == floors.length - 1) {
+            heroActions.moveToLavaAction();
+            return;
+        }
+
+        if (floors[rowPosition + 1][mCurrentPosition.getColumnPosition()].isWall()) {
+            heroActions.moveToWallAction();
             return;
         }
 
