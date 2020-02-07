@@ -138,6 +138,7 @@ public class DungeonView extends View {
         int treasureColPos = mDungeonConfig.getTreasurePosition().getColumnPosition();
 
         Floor startFloor = mFloors[treasureRowPos][treasureColPos];
+        startFloor.setTreasure(true);
 
         return new Treasure(
                 startFloor.getLeft(),
@@ -164,6 +165,8 @@ public class DungeonView extends View {
                     startFloor.getBottom(),
                     getResources()
             );
+
+            startFloor.setMonster(true);
         }
 
         return monsters;
@@ -255,7 +258,19 @@ public class DungeonView extends View {
                 new MoveAction() {
                     @Override
                     public void moveCallback() {
-                        mDialogEventListener.showLoseDialog();
+                        mDialogEventListener.showEndgameDialog(R.string.trap_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.monster_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.treasure_message);
                     }
                 },
                 dodgeAction

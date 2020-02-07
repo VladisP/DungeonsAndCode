@@ -210,6 +210,10 @@ public class Hero extends DungeonPart {
 
                     if (heroFloor.getTrap() != null && !heroActions.isDodge(heroFloor.getTrap().getTrapType())) {
                         heroActions.moveToTrapAction();
+                    } else if (heroFloor.hasMonster()) {
+                        heroActions.moveToMonsterAction();
+                    } else if (heroFloor.hasTreasure()) {
+                        heroActions.moveToTreasureAction();
                     } else {
                         heroActions.moveEndAction();
                     }

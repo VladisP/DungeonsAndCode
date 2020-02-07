@@ -8,17 +8,23 @@ public class HeroActions {
     private MoveAction mOnMoveAction;
     private MoveAction mOnMoveEndAction;
     private MoveAction mOnMoveToTrapAction;
+    private MoveAction mOnMoveToMonsterAction;
+    private MoveAction mOnMoveToTreasureAction;
     private DodgeAction mDodgeAction;
 
     public HeroActions(
             MoveAction onMoveAction,
             MoveAction onMoveEndAction,
             MoveAction onMoveToTrapAction,
+            MoveAction onMoveToMonsterAction,
+            MoveAction onMoveToTreasureAction,
             DodgeAction dodgeAction
     ) {
         mOnMoveAction = onMoveAction;
         mOnMoveEndAction = onMoveEndAction;
         mOnMoveToTrapAction = onMoveToTrapAction;
+        mOnMoveToMonsterAction = onMoveToMonsterAction;
+        mOnMoveToTreasureAction = onMoveToTreasureAction;
         mDodgeAction = dodgeAction;
     }
 
@@ -36,6 +42,14 @@ public class HeroActions {
 
     public void moveToTrapAction() {
         mOnMoveToTrapAction.moveCallback();
+    }
+
+    public void moveToMonsterAction() {
+        mOnMoveToMonsterAction.moveCallback();
+    }
+
+    public void moveToTreasureAction() {
+        mOnMoveToTreasureAction.moveCallback();
     }
 
     public boolean isDodge(TrapType trapType) {

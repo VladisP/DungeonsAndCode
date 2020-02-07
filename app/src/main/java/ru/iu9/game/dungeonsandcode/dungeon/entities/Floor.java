@@ -10,11 +10,15 @@ public class Floor extends DungeonPart {
 
     private boolean mIsWall;
     private Trap mTrap;
+    private boolean mHasMonster;
+    private boolean mHasTreasure;
 
     public Floor(int left, int top, int right, int bottom, Resources resources, boolean isWall) {
         super(left, top, right, bottom);
         mIsWall = isWall;
         mTrap = null;
+        mHasMonster = false;
+        mHasTreasure = false;
         mBackgroundImage = createBackgroundImage(resources);
     }
 
@@ -40,5 +44,21 @@ public class Floor extends DungeonPart {
 
     public void setTrap(Trap trap) {
         mTrap = trap;
+    }
+
+    boolean hasMonster() {
+        return mHasMonster;
+    }
+
+    public void setMonster(boolean hasMonster) {
+        mHasMonster = hasMonster;
+    }
+
+    boolean hasTreasure() {
+        return mHasTreasure;
+    }
+
+    public void setTreasure(boolean hasTreasure) {
+        mHasTreasure = hasTreasure;
     }
 }

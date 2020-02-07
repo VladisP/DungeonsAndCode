@@ -14,7 +14,7 @@ import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
-import ru.iu9.game.dungeonsandcode.dungeon.dialog.LoseFragment;
+import ru.iu9.game.dungeonsandcode.dungeon.dialog.EndgameFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
@@ -24,7 +24,7 @@ import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class GameActivity extends AppCompatActivity implements HeroMoveListener, DialogEventListener {
 
-    private static final String DIALOG_TAG = "LoseDialog";
+    private static final String DIALOG_TAG = "EndgameDialog";
 
     private DungeonConfig mDungeonConfig;
 
@@ -113,9 +113,9 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
     }
 
     @Override
-    public void showLoseDialog() {
-        LoseFragment loseDialog = new LoseFragment();
-        loseDialog.show(getSupportFragmentManager(), DIALOG_TAG);
+    public void showEndgameDialog(int msgId) {
+        EndgameFragment endgameDialog = EndgameFragment.newInstance(msgId);
+        endgameDialog.show(getSupportFragmentManager(), DIALOG_TAG);
     }
 
     @Override
