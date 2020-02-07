@@ -28,7 +28,14 @@
                 android:id="@+id/open_dodge_list_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/ic_open_dodge_list_24dp" />
+
+            <ImageButton
+                android:id="@+id/open_subroutine_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_open_subroutine" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,14 +46,14 @@
                     android:id="@+id/delete_program_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_delete_program_24dp" />
 
                 <ImageButton
                     android:id="@+id/remove_line_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_remove_line_24dp" />
 
                 <ImageButton
@@ -97,7 +104,7 @@
                     android:id="@+id/inc_nest_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_inc_nest_24dp" />
 
                 <ImageButton
