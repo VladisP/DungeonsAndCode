@@ -10,7 +10,7 @@ class Parser {
     private static int currentLineNum = 0;
     private static int currentNestLevel = 0;
 
-    static boolean parseMain(List<CodeLine> program) {
+    static boolean parseProgram(List<CodeLine> program) {
         currentLineNum = 0;
         currentNestLevel = 0;
 
@@ -53,7 +53,10 @@ class Parser {
     }
 
     private static boolean isPrimaryMainCommand(CommandType type) {
-        return type == CommandType.MOVE || type == CommandType.TURN_LEFT || type == CommandType.TURN_RIGHT;
+        return type == CommandType.MOVE ||
+                type == CommandType.TURN_LEFT ||
+                type == CommandType.TURN_RIGHT ||
+                type == CommandType.SUBROUTINE;
     }
 
     private static boolean parseRepeat(List<CodeLine> program) {

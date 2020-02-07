@@ -350,8 +350,9 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     private boolean isSyntaxCorrect(CodeAdapter codeAdapter) {
-        return Parser.parseMain(codeAdapter.getMainProgram()) &&
-                Parser.parseDodgeScript(codeAdapter.getDodgeScript());
+        return Parser.parseProgram(codeAdapter.getMainProgram()) &&
+                Parser.parseDodgeScript(codeAdapter.getDodgeScript()) &&
+                Parser.parseProgram(codeAdapter.getSubroutine());
     }
 
     @Override

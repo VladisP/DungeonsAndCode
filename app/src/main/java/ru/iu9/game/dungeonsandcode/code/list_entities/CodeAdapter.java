@@ -89,4 +89,8 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
     public List<CodeLine> getDodgeScript() {
         return mDodgeScriptCodeLines;
     }
+
+    public List<CodeLine> getSubroutine() {
+        return mSubroutineCodeLines;
+    }
 }
