@@ -20,8 +20,10 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
     private Context mContext;
     private CodeEditor mCodeEditor;
     private List<CommandListItem> mCommandListItems;
+
     private int mMainNestingLevel;
     private int mDodgeScriptNestingLevel;
+    private int mSubroutineNestingLevel;
 
     public CommandAdapter(Context context, CodeEditor codeEditor, List<CommandListItem> items) {
         mContext = context;
@@ -29,6 +31,7 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
         mCommandListItems = items;
         mMainNestingLevel = 0;
         mDodgeScriptNestingLevel = 0;
+        mSubroutineNestingLevel = 0;
     }
 
     @NonNull
@@ -51,30 +54,38 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandHolder> {
     }
 
     private int getCurrentNestingLevel() {
-        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ? mMainNestingLevel : mDodgeScriptNestingLevel;
+        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ? mMainNestingLevel :
+                mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT ? mDodgeScriptNestingLevel :
+                        mSubroutineNestingLevel;
     }
 
     private void incCurrentNestingLevel() {
         if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
             mMainNestingLevel++;
-        } else {
+        } else if (mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT) {
             mDodgeScriptNestingLevel++;
+        } else {
+            mSubroutineNestingLevel++;
         }
     }
 
     private void decCurrentNestingLevel() {
         if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
             mMainNestingLevel--;
-        } else {
+        } else if (mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT) {
             mDodgeScriptNestingLevel--;
+        } else {
+            mSubroutineNestingLevel--;
         }
     }
 
     private void clearCurrentNestingLevel() {
         if (mCodeEditor.getEditProgramType() == ProgramType.MAIN) {
             mMainNestingLevel = 0;
-        } else {
+        } else if (mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT) {
             mDodgeScriptNestingLevel = 0;
+        } else {
+            mSubroutineNestingLevel = 0;
         }
     }
 

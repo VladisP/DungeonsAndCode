@@ -21,14 +21,17 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     private Context mContext;
     private CodeEditor mCodeEditor;
+
     private List<CodeLine> mMainCodeLines;
     private List<CodeLine> mDodgeScriptCodeLines;
+    private List<CodeLine> mSubroutineCodeLines;
 
     public CodeAdapter(Context context, CodeEditor codeEditor) {
         mContext = context;
         mCodeEditor = codeEditor;
         mMainCodeLines = new ArrayList<>();
         mDodgeScriptCodeLines = new ArrayList<>();
+        mSubroutineCodeLines = new ArrayList<>();
     }
 
     @NonNull
@@ -51,9 +54,9 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
     }
 
     private List<CodeLine> getCurrentCodeLines() {
-        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ?
-                mMainCodeLines :
-                mDodgeScriptCodeLines;
+        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ? mMainCodeLines :
+                mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT ? mDodgeScriptCodeLines :
+                        mSubroutineCodeLines;
     }
 
     public void addCodeLine(CodeLine codeLine) {

@@ -10,6 +10,7 @@ public class CodeLine {
     private static final String COMMAND_TURN_LEFT_TEXT = "turnLeft()";
     private static final String COMMAND_TURN_RIGHT_TEXT = "turnRight()";
     private static final String COMMAND_REPEAT_TEXT = "repeat";
+    private static final String COMMAND_SUBROUTINE_TEXT = "f()";
     private static final String COMMAND_IF_TEXT = "if";
     private static final String COMMAND_ELIF_TEXT = "elif";
     private static final String COMMAND_ELSE_TEXT = "else";
@@ -82,6 +83,9 @@ public class CodeLine {
                 break;
             case REPEAT:
                 lineText.append(COMMAND_REPEAT_TEXT).append(" ").append(repNum).append(":");
+                break;
+            case SUBROUTINE:
+                lineText.append(COMMAND_SUBROUTINE_TEXT);
                 break;
             case IF:
                 lineText.append(COMMAND_IF_TEXT).append(" (").append(typeToString(trapType)).append("):");

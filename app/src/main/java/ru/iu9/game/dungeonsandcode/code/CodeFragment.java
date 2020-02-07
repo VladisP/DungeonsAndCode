@@ -120,17 +120,39 @@ public class CodeFragment extends Fragment implements CodeEditor {
             }
         });
 
-        final ImageButton openProgramListButton = view.findViewById(R.id.open_dodge_list_button);
+        final ImageButton openDodgeListButton = view.findViewById(R.id.open_dodge_list_button);
+        final ImageButton openSubroutineButton = view.findViewById(R.id.open_subroutine_button);
 
-        openProgramListButton.setOnClickListener(new View.OnClickListener() {
+        openDodgeListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOpenProgramType == ProgramType.MAIN) {
                     openDodgeList();
-                    openProgramListButton.setImageResource(R.drawable.ic_open_main_list_24dp);
+                    openDodgeListButton.setImageResource(R.drawable.ic_open_main_list_24dp);
                 } else if (mOpenProgramType == ProgramType.DODGE_SCRIPT) {
                     openMainList();
-                    openProgramListButton.setImageResource(R.drawable.ic_open_dodge_list_24dp);
+                    openDodgeListButton.setImageResource(R.drawable.ic_open_dodge_list_24dp);
+                } else if (mOpenProgramType == ProgramType.SUBROUTINE) {
+                    openDodgeList();
+                    openDodgeListButton.setImageResource(R.drawable.ic_open_main_list_24dp);
+                    openSubroutineButton.setImageResource(R.drawable.ic_open_subroutine);
+                }
+            }
+        });
+
+        openSubroutineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOpenProgramType == ProgramType.MAIN) {
+                    openSubroutine();
+                    openSubroutineButton.setImageResource(R.drawable.ic_open_main_list_24dp);
+                } else if (mOpenProgramType == ProgramType.DODGE_SCRIPT) {
+                    openSubroutine();
+                    openDodgeListButton.setImageResource(R.drawable.ic_open_dodge_list_24dp);
+                    openSubroutineButton.setImageResource(R.drawable.ic_open_main_list_24dp);
+                } else if (mOpenProgramType == ProgramType.SUBROUTINE) {
+                    openMainList();
+                    openSubroutineButton.setImageResource(R.drawable.ic_open_subroutine);
                 }
             }
         });
@@ -442,6 +464,19 @@ public class CodeFragment extends Fragment implements CodeEditor {
         }
     }
 
+    private void openSubroutine() {
+        CommandAdapter commandAdapter = (CommandAdapter) mCommandList.getAdapter();
+        CodeAdapter codeAdapter = (CodeAdapter) mCodeList.getAdapter();
+
+        if (commandAdapter != null && codeAdapter != null) {
+            mOpenProgramType = ProgramType.SUBROUTINE;
+
+            codeAdapter.notifyDataSetChanged();
+            commandAdapter.setCommandListItems(mCommandListItems);
+            mNestingLevelTextView.setText(String.format(Locale.US, "%d", commandAdapter.getNestingLevel()));
+        }
+    }
+
     private void resetScript(CodeAdapter codeAdapter) {
         if (codeAdapter.getItemCount() > 0) {
             codeAdapter.removeAllLines();
@@ -459,6 +494,9 @@ public class CodeFragment extends Fragment implements CodeEditor {
             resetScript(codeAdapter);
 
             mOpenProgramType = ProgramType.DODGE_SCRIPT;
+            resetScript(codeAdapter);
+
+            mOpenProgramType = ProgramType.SUBROUTINE;
             resetScript(codeAdapter);
 
             mOpenProgramType = currentProgramType;
