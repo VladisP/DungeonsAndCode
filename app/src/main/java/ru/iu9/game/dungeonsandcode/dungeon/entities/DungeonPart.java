@@ -6,6 +6,13 @@ import android.graphics.Canvas;
 
 abstract class DungeonPart {
 
+    static final String ANIMATION_PROPERTY = "animation";
+    static final String ANIMATION_PROPERTY_TOP = "top";
+    static final String ANIMATION_PROPERTY_RIGHT = "right";
+    static final String ANIMATION_PROPERTY_BOT = "bot";
+    static final String ANIMATION_PROPERTY_LEFT = "left";
+    static final int ANIMATION_DURATION = 1000;
+
     int mLeft;
     int mTop;
     int mRight;

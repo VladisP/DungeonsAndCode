@@ -1,6 +1,7 @@
 package ru.iu9.game.dungeonsandcode.activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,10 +14,17 @@ import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
+import ru.iu9.game.dungeonsandcode.dungeon.dialog.EndgameFragment;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
 
-import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.HeroMoveAction;
+import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
+import static ru.iu9.game.dungeonsandcode.code.CodeFragment.newInstance;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.DodgeAction;
+import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
-public class GameActivity extends AppCompatActivity implements CodeFragment.HeroMoveListener {
+public class GameActivity extends AppCompatActivity implements HeroMoveListener, DialogEventListener {
+
+    private static final String DIALOG_TAG = "EndgameDialog";
 
     private DungeonConfig mDungeonConfig;
 
@@ -38,7 +46,7 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
         }
 
         if (codeFragment == null) {
-            codeFragment = CodeFragment.newInstance();
+            codeFragment = newInstance();
             addFragment(codeFragment, R.id.code_fragment_container);
         }
     }
@@ -55,42 +63,42 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
     }
 
     @Override
-    public void moveUp(HeroMoveAction onMoveEndAction) {
+    public void moveUp(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroUp(onMoveEndAction);
+            dungeonFragment.moveHeroUp(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveLeft(HeroMoveAction onMoveEndAction) {
+    public void moveLeft(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroLeft(onMoveEndAction);
+            dungeonFragment.moveHeroLeft(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveRight(HeroMoveAction onMoveEndAction) {
+    public void moveRight(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroRight(onMoveEndAction);
+            dungeonFragment.moveHeroRight(onMoveEndAction, dodgeAction);
         }
     }
 
     @Override
-    public void moveDown(HeroMoveAction onMoveEndAction) {
+    public void moveDown(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
         DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dungeon_fragment_container);
 
         if (dungeonFragment != null) {
-            dungeonFragment.moveHeroDown(onMoveEndAction);
+            dungeonFragment.moveHeroDown(onMoveEndAction, dodgeAction);
         }
     }
 
@@ -102,5 +110,33 @@ public class GameActivity extends AppCompatActivity implements CodeFragment.Hero
         if (dungeonFragment != null) {
             dungeonFragment.changeHeroDirection(heroDirection);
         }
+    }
+
+    @Override
+    public void showEndgameDialog(int msgId) {
+        EndgameFragment endgameDialog = EndgameFragment.newInstance(msgId);
+        endgameDialog.show(getSupportFragmentManager(), DIALOG_TAG);
+    }
+
+    @Override
+    public void restartGame() {
+        DungeonFragment dungeonFragment = (DungeonFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dungeon_fragment_container);
+
+        if (dungeonFragment != null) {
+            dungeonFragment.restartGame();
+        }
+
+        CodeFragment codeFragment = (CodeFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.code_fragment_container);
+
+        if (codeFragment != null) {
+            codeFragment.reset();
+        }
+    }
+
+    @Override
+    public void showErrorMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

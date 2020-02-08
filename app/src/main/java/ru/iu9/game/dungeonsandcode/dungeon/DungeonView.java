@@ -17,6 +17,8 @@ import ru.iu9.game.dungeonsandcode.dungeon.entities.Hero;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Monster;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Treasure;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.HeroActions;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 
@@ -25,6 +27,7 @@ public class DungeonView extends View {
     private static final int PADDING_MIN_SIZE = 24;
     private static final int FLOORS_ROW_COUNT = 8;
 
+    private DialogEventListener mDialogEventListener;
     private DungeonConfig mDungeonConfig;
     private Floor[][] mFloors;
     private Hero mHero;
@@ -39,7 +42,10 @@ public class DungeonView extends View {
 
     public DungeonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDungeonConfig = ((GameActivity) context).getDungeonConfig();
+        GameActivity gameActivity = (GameActivity) context;
+
+        mDungeonConfig = gameActivity.getDungeonConfig();
+        mDialogEventListener = gameActivity;
     }
 
     @Override
@@ -62,6 +68,12 @@ public class DungeonView extends View {
         drawTraps(canvas);
         mTreasure.draw(canvas);
         mHero.draw(canvas);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mDialogEventListener = null;
     }
 
     private Bitmap createBackgroundImage(int width, int height) {
@@ -126,6 +138,7 @@ public class DungeonView extends View {
         int treasureColPos = mDungeonConfig.getTreasurePosition().getColumnPosition();
 
         Floor startFloor = mFloors[treasureRowPos][treasureColPos];
+        startFloor.setTreasure(true);
 
         return new Treasure(
                 startFloor.getLeft(),
@@ -152,6 +165,8 @@ public class DungeonView extends View {
                     startFloor.getBottom(),
                     getResources()
             );
+
+            startFloor.setMonster(true);
         }
 
         return monsters;
@@ -172,6 +187,18 @@ public class DungeonView extends View {
         }
     }
 
+    private int getLeftDelta(TrapType trapType) {
+        return trapType == TrapType.LEFT ? -Trap.DELTA
+                : trapType == TrapType.RIGHT ? Trap.DELTA
+                : 0;
+    }
+
+    private int getTopDelta(TrapType trapType) {
+        return trapType == TrapType.TOP ? -Trap.DELTA
+                : trapType == TrapType.BOTTOM ? Trap.DELTA
+                : 0;
+    }
+
     private Trap[] createTraps() {
         int trapsCount = mDungeonConfig.getTrapConfigs().length;
 
@@ -182,15 +209,18 @@ public class DungeonView extends View {
             PositionPair trapPosition = trapConfig.getTrapPosition();
 
             Floor startFloor = mFloors[trapPosition.getRowPosition()][trapPosition.getColumnPosition()];
+            TrapType trapType = convertToTrapType(trapConfig.getTrapType());
 
             traps[i] = new Trap(
-                    startFloor.getLeft(),
-                    startFloor.getTop(),
-                    startFloor.getRight(),
-                    startFloor.getBottom(),
+                    startFloor.getLeft() + getLeftDelta(trapType),
+                    startFloor.getTop() + getTopDelta(trapType),
+                    startFloor.getRight() + getLeftDelta(trapType),
+                    startFloor.getBottom() + getTopDelta(trapType),
                     getResources(),
-                    convertToTrapType(trapConfig.getTrapType())
+                    trapType
             );
+
+            startFloor.setTrap(traps[i]);
         }
 
         return traps;
@@ -216,44 +246,67 @@ public class DungeonView extends View {
         }
     }
 
-    public void moveHeroUp(HeroMoveAction onMoveEndAction) {
-        mHero.moveUp(mFloors, onMoveEndAction, new HeroMoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+    private HeroActions makeHeroMoveActions(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        return new HeroActions(
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        invalidate();
+                    }
+                },
+                onMoveEndAction,
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.trap_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.monster_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.treasure_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.wall_message);
+                    }
+                },
+                new MoveAction() {
+                    @Override
+                    public void moveCallback() {
+                        mDialogEventListener.showEndgameDialog(R.string.lava_message);
+                    }
+                },
+                dodgeAction
+        );
     }
 
-    public void moveHeroLeft(HeroMoveAction onMoveEndAction) {
-        mHero.moveLeft(mFloors, onMoveEndAction, new HeroMoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+    public void moveHeroUp(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mHero.moveUp(mFloors, makeHeroMoveActions(onMoveEndAction, dodgeAction));
     }
 
-    public void moveHeroRight(HeroMoveAction onMoveEndAction) {
-        mHero.moveRight(mFloors, onMoveEndAction, new HeroMoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+    public void moveHeroLeft(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mHero.moveLeft(mFloors, makeHeroMoveActions(onMoveEndAction, dodgeAction));
     }
 
-    public void moveHeroDown(HeroMoveAction onMoveEndAction) {
-        mHero.moveDown(mFloors, onMoveEndAction, new HeroMoveAction() {
-            @Override
-            public void moveCallback() {
-                invalidate();
-            }
-        });
+    public void moveHeroRight(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mHero.moveRight(mFloors, makeHeroMoveActions(onMoveEndAction, dodgeAction));
+    }
+
+    public void moveHeroDown(MoveAction onMoveEndAction, DodgeAction dodgeAction) {
+        mHero.moveDown(mFloors, makeHeroMoveActions(onMoveEndAction, dodgeAction));
     }
 
     public void changeHeroDirection(HeroDirection heroDirection) {
-        mHero.changeDirection(heroDirection, new HeroMoveAction() {
+        mHero.changeDirection(heroDirection, new MoveAction() {
             @Override
             public void moveCallback() {
                 invalidate();
@@ -261,7 +314,16 @@ public class DungeonView extends View {
         });
     }
 
-    public interface HeroMoveAction {
+    public void restartGame() {
+        mHero.reset(mFloors);
+        invalidate();
+    }
+
+    public interface MoveAction {
         void moveCallback();
+    }
+
+    public interface DodgeAction {
+        boolean isDodge(TrapType trapType);
     }
 }

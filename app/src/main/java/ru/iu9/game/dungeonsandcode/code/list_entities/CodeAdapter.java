@@ -8,23 +8,30 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
+import ru.iu9.game.dungeonsandcode.code.helpers.ProgramType;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     private Context mContext;
     private CodeEditor mCodeEditor;
-    private List<CodeLine> mCodeLines;
 
-    public CodeAdapter(Context context, CodeEditor codeEditor, List<CodeLine> codeLines) {
+    private List<CodeLine> mMainCodeLines;
+    private List<CodeLine> mDodgeScriptCodeLines;
+    private List<CodeLine> mSubroutineCodeLines;
+
+    public CodeAdapter(Context context, CodeEditor codeEditor) {
         mContext = context;
         mCodeEditor = codeEditor;
-        mCodeLines = codeLines;
+        mMainCodeLines = new ArrayList<>();
+        mDodgeScriptCodeLines = new ArrayList<>();
+        mSubroutineCodeLines = new ArrayList<>();
     }
 
     @NonNull
@@ -37,32 +44,53 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CodeHolder holder, int position) {
-        CodeLine codeLine = mCodeLines.get(position);
+        CodeLine codeLine = getCurrentCodeLines().get(position);
         holder.bind(codeLine, position);
     }
 
     @Override
     public int getItemCount() {
-        return mCodeLines.size();
+        return getCurrentCodeLines().size();
+    }
+
+    private List<CodeLine> getCurrentCodeLines() {
+        return mCodeEditor.getEditProgramType() == ProgramType.MAIN ? mMainCodeLines :
+                mCodeEditor.getEditProgramType() == ProgramType.DODGE_SCRIPT ? mDodgeScriptCodeLines :
+                        mSubroutineCodeLines;
     }
 
     public void addCodeLine(CodeLine codeLine) {
-        mCodeLines.add(codeLine);
+        getCurrentCodeLines().add(codeLine);
+    }
+
+    private boolean isControlStructure(CommandType type) {
+        return type == CommandType.REPEAT ||
+                type == CommandType.IF ||
+                type == CommandType.ELIF ||
+                type == CommandType.ELSE;
     }
 
     public void removeLastLine() {
-        if (mCodeLines.get(getItemCount() - 1).getCommandType() == CommandType.REPEAT) {
+        if (isControlStructure(getCurrentCodeLines().get(getItemCount() - 1).getCommandType())) {
             mCodeEditor.decNestingLevel();
         }
 
-        mCodeLines.remove(mCodeLines.size() - 1);
+        getCurrentCodeLines().remove(getCurrentCodeLines().size() - 1);
     }
 
     public void removeAllLines() {
-        mCodeLines.clear();
+        getCurrentCodeLines().clear();
     }
 
-    public List<CodeLine> getProgram() {
-        return mCodeLines;
+    public List<CodeLine> getMainProgram() {
+        return mMainCodeLines;
+    }
+
+    public List<CodeLine> getDodgeScript() {
+        return mDodgeScriptCodeLines;
+    }
+
+    public List<CodeLine> getSubroutine() {
+        return mSubroutineCodeLines;
     }
 }
