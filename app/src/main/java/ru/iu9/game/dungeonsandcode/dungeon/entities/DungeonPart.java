@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-abstract class DungeonPart {
+public abstract class DungeonPart {
 
     static final String ANIMATION_PROPERTY = "animation";
     static final String ANIMATION_PROPERTY_TOP = "top";
@@ -13,14 +13,14 @@ abstract class DungeonPart {
     static final String ANIMATION_PROPERTY_LEFT = "left";
     static final int ANIMATION_DURATION = 1000;
 
-    int mLeft;
-    int mTop;
-    int mRight;
-    int mBottom;
+    protected int mLeft;
+    protected int mTop;
+    protected int mRight;
+    protected int mBottom;
 
-    Bitmap mBackgroundImage;
+    protected Bitmap mBackgroundImage;
 
-    DungeonPart(int left, int top, int right, int bottom) {
+    public DungeonPart(int left, int top, int right, int bottom) {
         mLeft = left;
         mTop = top;
         mRight = right;
