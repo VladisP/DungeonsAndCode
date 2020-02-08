@@ -9,6 +9,7 @@
     <string name="treasure_message">Победа! Вы нашли сокровище :)</string>
     <string name="wall_message">Вы расшиблись об стену :(</string>
     <string name="lava_message">Вы упали в лаву :(</string>
+    <string name="recursion_message">Вы ушли в бесконечную рекурсию :(</string>
     <string name="trapleft">trapLeft</string>
     <string name="traptop">trapTop</string>
     <string name="trapright">trapRight</string>

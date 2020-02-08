@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Stack;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.code.dialog.RepNumPickerFragment;
@@ -28,8 +29,10 @@ import ru.iu9.game.dungeonsandcode.code.helpers.CodeEditor;
 import ru.iu9.game.dungeonsandcode.code.helpers.CodeLine;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandListItem;
 import ru.iu9.game.dungeonsandcode.code.helpers.CommandType;
+import ru.iu9.game.dungeonsandcode.code.helpers.Frame;
 import ru.iu9.game.dungeonsandcode.code.helpers.HeroDirection;
 import ru.iu9.game.dungeonsandcode.code.helpers.ProgramType;
+import ru.iu9.game.dungeonsandcode.code.helpers.RepeatConfig;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CodeAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandAdapter;
 import ru.iu9.game.dungeonsandcode.code.list_entities.CommandHolder;
@@ -162,7 +165,11 @@ public class CodeFragment extends Fragment implements CodeEditor {
         mRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                runProgram();
+                try {
+                    runProgram();
+                } catch (StackOverflowError error) {
+                    mDialogEventListener.showEndgameDialog(R.string.recursion_message);
+                }
             }
         });
     }
@@ -362,16 +369,81 @@ public class CodeFragment extends Fragment implements CodeEditor {
         if (codeAdapter != null && isSyntaxCorrect(codeAdapter)) {
             mRunButton.setEnabled(false);
 
+            final DodgeAction dodgeAction = new DodgeAction() {
+                @Override
+                public boolean isDodge(TrapType trapType) {
+                    return Interpreter.isDodged(trapType, codeAdapter.getDodgeScript());
+                }
+            };
+
+            final Stack<Frame> callStack = new Stack<>();
+            callStack.push(new Frame(codeAdapter.getMainProgram()));
+
             Interpreter.run(
                     codeAdapter.getMainProgram(),
                     mHeroMoveListener,
-                    new DodgeAction() {
-                        @Override
-                        public boolean isDodge(TrapType trapType) {
-                            return Interpreter.isDodged(trapType, codeAdapter.getDodgeScript());
-                        }
-                    },
+                    dodgeAction,
                     new InterpreterActionListener() {
+
+                        InterpreterActionListener mInterpreterActionListener = this;
+
+                        @Override
+                        public void onSubroutineCall(RepeatConfig mainConfig, Stack<RepeatConfig> outerConfigs) {
+                            callStack.peek().setRepeatConfigs(mainConfig, outerConfigs);
+
+                            Interpreter.run(
+                                    codeAdapter.getSubroutine(),
+                                    mHeroMoveListener,
+                                    dodgeAction,
+                                    new InterpreterActionListener() {
+                                        @Override
+                                        public void onSubroutineCall(RepeatConfig mainConfig, Stack<RepeatConfig> outerConfigs) {
+                                            callStack.push(new Frame(codeAdapter.getSubroutine()));
+                                            mInterpreterActionListener.onSubroutineCall(mainConfig, outerConfigs);
+                                        }
+
+                                        @Override
+                                        public void onInfinityRecursion() {
+                                            mDialogEventListener.showEndgameDialog(R.string.recursion_message);
+                                        }
+
+                                        @Override
+                                        public void onInterpretationFinished() {
+                                            Interpreter.restoreCurrentLine();
+
+                                            Frame frame = callStack.pop();
+                                            InterpreterActionListener listener;
+
+                                            if (callStack.empty()) {
+                                                callStack.push(new Frame(codeAdapter.getMainProgram()));
+                                                listener = mInterpreterActionListener;
+                                            } else {
+                                                listener = this;
+                                            }
+
+                                            if (frame.getMainConfig() == null && frame.getOuterConfigs() == null) {
+                                                Interpreter.run(
+                                                        frame.getCurrentProgram(),
+                                                        mHeroMoveListener,
+                                                        dodgeAction,
+                                                        listener
+                                                );
+                                            } else {
+                                                Interpreter.repeat(
+                                                        frame.getMainConfig(),
+                                                        frame.getOuterConfigs()
+                                                );
+                                            }
+                                        }
+                                    }
+                            );
+                        }
+
+                        @Override
+                        public void onInfinityRecursion() {
+                            mDialogEventListener.showEndgameDialog(R.string.recursion_message);
+                        }
+
                         @Override
                         public void onInterpretationFinished() {
                             mRunButton.setEnabled(true);
@@ -524,6 +596,10 @@ public class CodeFragment extends Fragment implements CodeEditor {
     }
 
     public interface InterpreterActionListener {
+        void onSubroutineCall(RepeatConfig mainConfig, Stack<RepeatConfig> outerConfigs);
+
+        void onInfinityRecursion();
+
         void onInterpretationFinished();
     }
 }

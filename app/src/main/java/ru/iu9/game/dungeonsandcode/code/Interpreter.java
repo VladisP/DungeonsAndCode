@@ -19,6 +19,7 @@ class Interpreter {
     private static HeroDirection sHeroDirection = HeroDirection.TOP;
     private static int sCurrentLine = 0;
     private static int sDodgeCurrentLineNum = 0;
+    private static Stack<Integer> sSaveLineNumbers = new Stack<>();
 
     static void run(
             final List<CodeLine> program,
@@ -68,13 +69,23 @@ class Interpreter {
 
                 repeat(mainConfig, new Stack<RepeatConfig>());
                 break;
+            case SUBROUTINE:
+                sSaveLineNumbers.push(sCurrentLine + 1);
+                sCurrentLine = 0;
+                interpreterActionListener.onSubroutineCall(null, null);
+                break;
         }
+    }
+
+    static void restoreCurrentLine() {
+        sCurrentLine = sSaveLineNumbers.pop();
     }
 
     static void reset() {
         sHeroDirection = HeroDirection.TOP;
         sCurrentLine = 0;
         sDodgeCurrentLineNum = 0;
+        sSaveLineNumbers.clear();
     }
 
     private static void onCommandEndAction(
@@ -84,7 +95,12 @@ class Interpreter {
             InterpreterActionListener interpreterActionListener
     ) {
         sCurrentLine++;
-        run(program, heroMoveListener, dodgeAction, interpreterActionListener);
+
+        try {
+            run(program, heroMoveListener, dodgeAction, interpreterActionListener);
+        } catch (StackOverflowError error) {
+            interpreterActionListener.onInfinityRecursion();
+        }
     }
 
     private static void move(HeroMoveListener heroMoveListener, MoveAction onMoveEndAction, DodgeAction dodgeAction) {
@@ -146,7 +162,7 @@ class Interpreter {
         }
     }
 
-    private static void repeat(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
+    static void repeat(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
         if (
                 sCurrentLine >= mainConfig.getProgram().size() ||
                         mainConfig.getProgram().get(sCurrentLine).getNestingLevel() < mainConfig.getNestLevel()
@@ -232,12 +248,22 @@ class Interpreter {
                         outerConfigs
                 );
                 break;
+            case SUBROUTINE:
+                sSaveLineNumbers.push(sCurrentLine + 1);
+                sCurrentLine = 0;
+                mainConfig.getInterpreterActionListener().onSubroutineCall(mainConfig, outerConfigs);
+                break;
         }
     }
 
     private static void onRepeatCommandEndAction(final RepeatConfig mainConfig, final Stack<RepeatConfig> outerConfigs) {
         sCurrentLine++;
-        repeat(mainConfig, outerConfigs);
+
+        try {
+            repeat(mainConfig, outerConfigs);
+        } catch (StackOverflowError error) {
+            mainConfig.getInterpreterActionListener().onInfinityRecursion();
+        }
     }
 
     private static CodeLine peekDodgeCodeLine(List<CodeLine> dodgeScript) {
