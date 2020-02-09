@@ -36,6 +36,10 @@ public class ConstructorView extends View {
         mConstructorEventListener = (ConstructorEventListener) context;
     }
 
+    void setCurrentPartType(ConstructorPartType newPartType) {
+        mCurrentPartType = newPartType;
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -158,8 +162,7 @@ public class ConstructorView extends View {
                         coordXValue + floorSize,
                         coordYValue + floorSize,
                         new PositionPair(i, j),
-                        getResources(),
-                        ConstructorPartType.FLOOR
+                        getResources()
                 );
 
                 coordXValue += floorSize;

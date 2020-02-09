@@ -3,6 +3,7 @@ package ru.iu9.game.dungeonsandcode.constructor.entities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
@@ -13,19 +14,20 @@ public class ConstructorPart extends DungeonPart {
 
     private ConstructorPartType mPartType;
     private PositionPair mPosition;
+    private Bitmap mForegroundImage;
 
     public ConstructorPart(int left,
                            int top,
                            int right,
                            int bottom,
                            PositionPair position,
-                           Resources resources,
-                           ConstructorPartType partType
+                           Resources resources
     ) {
         super(left, top, right, bottom);
         mPosition = position;
-        mPartType = partType;
+        mPartType = ConstructorPartType.FLOOR;
         mBackgroundImage = createBackgroundImage(resources);
+        mForegroundImage = null;
     }
 
     public ConstructorPart(int left, int top, int right, int bottom, PositionPair position) {
@@ -38,8 +40,10 @@ public class ConstructorPart extends DungeonPart {
     }
 
     public void setPartType(ConstructorPartType partType, Resources resources) {
-        mPartType = partType;
+        mPartType = ConstructorPartType.FLOOR;
         mBackgroundImage = createBackgroundImage(resources);
+        mPartType = partType;
+        mForegroundImage = createBackgroundImage(resources);
     }
 
     public PositionPair getPosition() {
@@ -86,5 +90,14 @@ public class ConstructorPart extends DungeonPart {
                 , mBottom - mTop
                 , false
         );
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(mBackgroundImage, mLeft, mTop, null);
+
+        if (mForegroundImage != null) {
+            canvas.drawBitmap(mForegroundImage, mLeft, mTop, null);
+        }
     }
 }

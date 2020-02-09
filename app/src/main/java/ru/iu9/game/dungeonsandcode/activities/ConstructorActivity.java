@@ -12,6 +12,7 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.ConstructorFragment;
 import ru.iu9.game.dungeonsandcode.constructor.EditorFragment;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
+import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
 
 public class ConstructorActivity extends AppCompatActivity implements ConstructorEventListener {
 
@@ -40,6 +41,16 @@ public class ConstructorActivity extends AppCompatActivity implements Constructo
                 .beginTransaction()
                 .add(containerId, fragment)
                 .commit();
+    }
+
+    @Override
+    public void switchPartType(ConstructorPartType newPartType) {
+        ConstructorFragment constructorFragment = (ConstructorFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.constructor_fragment_container);
+
+        if (constructorFragment != null) {
+            constructorFragment.switchPartType(newPartType);
+        }
     }
 
     @Override
