@@ -41,4 +41,8 @@ public class ConstructorFragment extends Fragment {
     public void removeLastAction() {
         mConstructorView.removeLastAddedPart();
     }
+
+    public void removeAll() {
+        mConstructorView.removeAll();
+    }
 }

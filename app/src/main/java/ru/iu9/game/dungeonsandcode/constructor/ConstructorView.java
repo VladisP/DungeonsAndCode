@@ -197,6 +197,12 @@ public class ConstructorView extends View {
         invalidate();
     }
 
+    void removeAll() {
+        while (!mHistoryStack.empty()) {
+            removeLastAddedPart();
+        }
+    }
+
     private Bitmap createBackgroundImage(int width, int height) {
         return Bitmap.createScaledBitmap(
                 BitmapFactory.decodeResource(getResources(), R.drawable.scene_background),

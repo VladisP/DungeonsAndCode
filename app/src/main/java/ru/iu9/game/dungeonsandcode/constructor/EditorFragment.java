@@ -74,6 +74,13 @@ public class EditorFragment extends Fragment {
                 mConstructorEventListener.removeLastAction();
             }
         });
+
+        view.findViewById(R.id.reset_constructor_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConstructorEventListener.removeAll();
+            }
+        });
     }
 
     @Override

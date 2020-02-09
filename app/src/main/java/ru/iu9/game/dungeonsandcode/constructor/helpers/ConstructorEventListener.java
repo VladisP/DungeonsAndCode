@@ -5,5 +5,7 @@ public interface ConstructorEventListener {
 
     void removeLastAction();
 
+    void removeAll();
+
     void showErrorMessage(int msgId);
 }
