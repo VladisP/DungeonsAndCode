@@ -11,4 +11,9 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="ConstructorRadioButton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/colorCode</item>
+        <item name="colorControlActivated">@color/colorCode</item>
+    </style>
+
 </resources>

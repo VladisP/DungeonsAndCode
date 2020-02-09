@@ -5,4 +5,121 @@
     android:background="@color/colorBlack"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/reset_constructor_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/reset_constructor"
+            android:src="@drawable/ic_restart_game_24dp" />
+
+        <ImageButton
+            android:id="@+id/save_level_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/save_level"
+            android:src="@drawable/ic_save_level_24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/remove_last_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/remove_last_action"
+                android:src="@drawable/ic_remove_line_24dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorCode" />
+
+    <RadioGroup
+        android:id="@+id/constructor_radio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:theme="@style/ConstructorRadioButton">
+
+        <RadioButton
+            android:id="@+id/constructor_radio_wall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/constructor_wall"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_hero"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_treasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_treasure"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_monster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_monster"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_trap_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_trap_left"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_trap_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_trap_top"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_trap_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_trap_right"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/constructor_radio_trap_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/constructor_trap_bottom"
+            android:textColor="@color/colorCode"
+            android:textSize="24sp" />
+
+    </RadioGroup>
+
 </LinearLayout>
