@@ -54,6 +54,16 @@ public class ConstructorActivity extends AppCompatActivity implements Constructo
     }
 
     @Override
+    public void removeLastAction() {
+        ConstructorFragment constructorFragment = (ConstructorFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.constructor_fragment_container);
+
+        if (constructorFragment != null) {
+            constructorFragment.removeLastAction();
+        }
+    }
+
+    @Override
     public void showErrorMessage(int msgId) {
         Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
     }

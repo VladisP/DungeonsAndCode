@@ -11,6 +11,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.Stack;
+
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.entities.ConstructorPart;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
@@ -29,6 +31,7 @@ public class ConstructorView extends View {
     private Bitmap mBackgroundImage;
     private boolean mHasHero = false;
     private boolean mHasTreasure = false;
+    private Stack<PositionPair> mHistoryStack = new Stack<>();
 
     public ConstructorView(Context context) {
         super(context);
@@ -95,6 +98,8 @@ public class ConstructorView extends View {
             mConstructorEventListener.showErrorMessage(R.string.unique_treasure);
             return;
         }
+
+        mHistoryStack.push(part.getPosition());
 
         ConstructorPart newPart = new ConstructorPart(
                 part.getLeft(),
@@ -164,6 +169,32 @@ public class ConstructorView extends View {
         return mCurrentPartType == ConstructorPartType.TRAP_TOP ? -Trap.DELTA
                 : mCurrentPartType == ConstructorPartType.TRAP_BOTTOM ? Trap.DELTA
                 : 0;
+    }
+
+    void removeLastAddedPart() {
+        if (mHistoryStack.empty()) {
+            return;
+        }
+
+        PositionPair position = mHistoryStack.pop();
+        ConstructorPart basePart = mParts[position.getRowPosition()][position.getColumnPosition()];
+
+        if (basePart.getPartType() == ConstructorPartType.HERO) {
+            mHasHero = false;
+        } else if (basePart.getPartType() == ConstructorPartType.TREASURE) {
+            mHasTreasure = false;
+        }
+
+        mParts[position.getRowPosition()][position.getColumnPosition()] = new ConstructorPart(
+                basePart.getLeft(),
+                basePart.getTop(),
+                basePart.getRight(),
+                basePart.getBottom(),
+                position,
+                getResources()
+        );
+
+        invalidate();
     }
 
     private Bitmap createBackgroundImage(int width, int height) {

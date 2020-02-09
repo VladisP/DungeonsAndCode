@@ -37,4 +37,8 @@ public class ConstructorFragment extends Fragment {
     public void switchPartType(ConstructorPartType newPartType) {
         mConstructorView.setCurrentPartType(newPartType);
     }
+
+    public void removeLastAction() {
+        mConstructorView.removeLastAddedPart();
+    }
 }

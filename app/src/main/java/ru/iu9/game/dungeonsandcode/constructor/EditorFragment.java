@@ -67,6 +67,13 @@ public class EditorFragment extends Fragment {
                 }
             }
         });
+
+        view.findViewById(R.id.remove_last_action_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConstructorEventListener.removeLastAction();
+            }
+        });
     }
 
     @Override
