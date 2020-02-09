@@ -1,4 +1,4 @@
-package ru.iu9.game.dungeonsandcode.constructor.entities;
+package ru.iu9.game.dungeonsandcode.constructor.helpers;
 
 public enum ConstructorPartType {
     FLOOR,

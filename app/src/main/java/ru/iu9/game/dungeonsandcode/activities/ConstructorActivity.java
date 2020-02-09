@@ -1,6 +1,7 @@
 package ru.iu9.game.dungeonsandcode.activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.ConstructorFragment;
 import ru.iu9.game.dungeonsandcode.constructor.EditorFragment;
+import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
 
-public class ConstructorActivity extends AppCompatActivity {
+public class ConstructorActivity extends AppCompatActivity implements ConstructorEventListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,5 +40,10 @@ public class ConstructorActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(containerId, fragment)
                 .commit();
+    }
+
+    @Override
+    public void showErrorMessage(int msgId) {
+        Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show();
     }
 }

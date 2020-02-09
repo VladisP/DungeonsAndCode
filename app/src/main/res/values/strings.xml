@@ -16,4 +16,5 @@
     <string name="trapbottom">trapBottom</string>
     <string name="choose_trap_type">Укажите тип ловушки</string>
     <string name="syntax_error">Программа написана с ошибками!</string>
+    <string name="cell_is_taken">Эта клетка уже занята!</string>
 </resources>

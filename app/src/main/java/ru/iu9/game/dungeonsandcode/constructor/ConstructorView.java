@@ -1,30 +1,30 @@
 package ru.iu9.game.dungeonsandcode.constructor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.util.List;
-
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.entities.ConstructorPart;
-import ru.iu9.game.dungeonsandcode.constructor.entities.ConstructorPartType;
+import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
+import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 
 public class ConstructorView extends View {
 
     private static final int PADDING_MIN_SIZE = 24;
     private static final int FLOORS_ROW_COUNT = 8;
 
-    private ConstructorPart[][] mFloors;
-    private ConstructorPart mHero;
-    private ConstructorPart mTreasure;
-    private List<ConstructorPart> mMonsters;
-    private List<ConstructorPart> mTraps;
+    private ConstructorEventListener mConstructorEventListener;
+    private ConstructorPartType mCurrentPartType = ConstructorPartType.WALL;
+    private ConstructorPart[][] mParts;
     private Bitmap mBackgroundImage;
 
     public ConstructorView(Context context) {
@@ -33,6 +33,7 @@ public class ConstructorView extends View {
 
     public ConstructorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        mConstructorEventListener = (ConstructorEventListener) context;
     }
 
     @Override
@@ -40,13 +41,95 @@ public class ConstructorView extends View {
         super.onLayout(changed, left, top, right, bottom);
 
         mBackgroundImage = createBackgroundImage(getWidth(), getHeight());
-        mFloors = createFloors(Math.min(getHeight(), getWidth()));
+        mParts = createFloors(Math.min(getHeight(), getWidth()));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(mBackgroundImage, 0, 0, null);
-        drawFloors(canvas);
+        drawParts(canvas);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mConstructorEventListener = null;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            createConstructorPart((int) event.getX(), (int) event.getY());
+            return true;
+        }
+
+        return false;
+    }
+
+    private void createConstructorPart(int x, int y) {
+        ConstructorPart part = findPartByCoords(x, y);
+
+        if (part == null) {
+            return;
+        }
+
+        if (part.getPartType() != ConstructorPartType.FLOOR) {
+            mConstructorEventListener.showErrorMessage(R.string.cell_is_taken);
+            return;
+        }
+
+        ConstructorPart newPart = new ConstructorPart(
+                part.getLeft(),
+                part.getTop(),
+                part.getRight(),
+                part.getBottom(),
+                part.getPosition()
+        );
+
+        switch (mCurrentPartType) {
+            case WALL:
+                newPart.setPartType(ConstructorPartType.WALL, getResources());
+                break;
+            case HERO:
+                newPart.setPartType(ConstructorPartType.HERO, getResources());
+                break;
+            case TREASURE:
+                newPart.setPartType(ConstructorPartType.TREASURE, getResources());
+                break;
+            case MONSTER:
+                newPart.setPartType(ConstructorPartType.MONSTER, getResources());
+                break;
+            case TRAP_LEFT:
+                newPart.setPartType(ConstructorPartType.TRAP_LEFT, getResources());
+                break;
+            case TRAP_TOP:
+                newPart.setPartType(ConstructorPartType.TRAP_TOP, getResources());
+                break;
+            case TRAP_RIGHT:
+                newPart.setPartType(ConstructorPartType.TRAP_RIGHT, getResources());
+                break;
+            case TRAP_BOTTOM:
+                newPart.setPartType(ConstructorPartType.TRAP_BOTTOM, getResources());
+                break;
+        }
+
+        mParts[part.getPosition().getRowPosition()][part.getPosition().getColumnPosition()] = newPart;
+        invalidate();
+    }
+
+    private ConstructorPart findPartByCoords(int x, int y) {
+        for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
+            for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
+                ConstructorPart part = mParts[i][j];
+
+                if (part.getLeft() <= x && part.getRight() >= x && part.getTop() <= y && part.getBottom() >= y) {
+                    return part;
+                }
+            }
+        }
+
+        return null;
     }
 
     private Bitmap createBackgroundImage(int width, int height) {
@@ -74,6 +157,7 @@ public class ConstructorView extends View {
                         coordYValue,
                         coordXValue + floorSize,
                         coordYValue + floorSize,
+                        new PositionPair(i, j),
                         getResources(),
                         ConstructorPartType.FLOOR
                 );
@@ -88,10 +172,10 @@ public class ConstructorView extends View {
         return floors;
     }
 
-    private void drawFloors(Canvas canvas) {
+    private void drawParts(Canvas canvas) {
         for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
             for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
-                mFloors[i][j].draw(canvas);
+                mParts[i][j].draw(canvas);
             }
         }
     }
