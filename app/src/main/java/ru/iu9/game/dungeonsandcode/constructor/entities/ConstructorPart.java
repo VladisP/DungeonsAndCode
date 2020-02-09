@@ -15,6 +15,8 @@ public class ConstructorPart extends DungeonPart {
     private ConstructorPartType mPartType;
     private PositionPair mPosition;
     private Bitmap mForegroundImage;
+    private int mForegroundLeftDelta;
+    private int mForegroundTopDelta;
 
     public ConstructorPart(int left,
                            int top,
@@ -28,11 +30,15 @@ public class ConstructorPart extends DungeonPart {
         mPartType = ConstructorPartType.FLOOR;
         mBackgroundImage = createBackgroundImage(resources);
         mForegroundImage = null;
+        mForegroundLeftDelta = 0;
+        mForegroundTopDelta = 0;
     }
 
     public ConstructorPart(int left, int top, int right, int bottom, PositionPair position) {
         super(left, top, right, bottom);
         mPosition = position;
+        mForegroundLeftDelta = 0;
+        mForegroundTopDelta = 0;
     }
 
     public ConstructorPartType getPartType() {
@@ -48,6 +54,14 @@ public class ConstructorPart extends DungeonPart {
 
     public PositionPair getPosition() {
         return mPosition;
+    }
+
+    public void setForegroundLeftDelta(int foregroundLeftDelta) {
+        mForegroundLeftDelta = foregroundLeftDelta;
+    }
+
+    public void setForegroundTopDelta(int foregroundTopDelta) {
+        mForegroundTopDelta = foregroundTopDelta;
     }
 
     @Override
@@ -97,7 +111,12 @@ public class ConstructorPart extends DungeonPart {
         canvas.drawBitmap(mBackgroundImage, mLeft, mTop, null);
 
         if (mForegroundImage != null) {
-            canvas.drawBitmap(mForegroundImage, mLeft, mTop, null);
+            canvas.drawBitmap(
+                    mForegroundImage,
+                    mLeft + mForegroundLeftDelta,
+                    mTop + mForegroundTopDelta,
+                    null
+            );
         }
     }
 }

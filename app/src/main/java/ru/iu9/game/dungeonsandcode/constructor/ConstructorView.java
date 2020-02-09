@@ -15,6 +15,7 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.entities.ConstructorPart;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
+import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 
 public class ConstructorView extends View {
@@ -91,6 +92,9 @@ public class ConstructorView extends View {
                 part.getPosition()
         );
 
+        newPart.setForegroundLeftDelta(getLeftDelta());
+        newPart.setForegroundTopDelta(getTopDelta());
+
         switch (mCurrentPartType) {
             case WALL:
                 newPart.setPartType(ConstructorPartType.WALL, getResources());
@@ -136,6 +140,18 @@ public class ConstructorView extends View {
         return null;
     }
 
+    private int getLeftDelta() {
+        return mCurrentPartType == ConstructorPartType.TRAP_LEFT ? -Trap.DELTA
+                : mCurrentPartType == ConstructorPartType.TRAP_RIGHT ? Trap.DELTA
+                : 0;
+    }
+
+    private int getTopDelta() {
+        return mCurrentPartType == ConstructorPartType.TRAP_TOP ? -Trap.DELTA
+                : mCurrentPartType == ConstructorPartType.TRAP_BOTTOM ? Trap.DELTA
+                : 0;
+    }
+
     private Bitmap createBackgroundImage(int width, int height) {
         return Bitmap.createScaledBitmap(
                 BitmapFactory.decodeResource(getResources(), R.drawable.scene_background),
@@ -176,10 +192,34 @@ public class ConstructorView extends View {
     }
 
     private void drawParts(Canvas canvas) {
+        drawNotTrapParts(canvas);
+        drawTraps(canvas);
+    }
+
+    private void drawNotTrapParts(Canvas canvas) {
         for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
             for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
-                mParts[i][j].draw(canvas);
+                if (!isTrap(mParts[i][j])) {
+                    mParts[i][j].draw(canvas);
+                }
             }
         }
+    }
+
+    private void drawTraps(Canvas canvas) {
+        for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
+            for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
+                if (isTrap(mParts[i][j])) {
+                    mParts[i][j].draw(canvas);
+                }
+            }
+        }
+    }
+
+    private boolean isTrap(ConstructorPart part) {
+        return part.getPartType() == ConstructorPartType.TRAP_LEFT ||
+                part.getPartType() == ConstructorPartType.TRAP_TOP ||
+                part.getPartType() == ConstructorPartType.TRAP_RIGHT ||
+                part.getPartType() == ConstructorPartType.TRAP_BOTTOM;
     }
 }
