@@ -27,6 +27,8 @@ public class ConstructorView extends View {
     private ConstructorPartType mCurrentPartType = ConstructorPartType.WALL;
     private ConstructorPart[][] mParts;
     private Bitmap mBackgroundImage;
+    private boolean mHasHero = false;
+    private boolean mHasTreasure = false;
 
     public ConstructorView(Context context) {
         super(context);
@@ -84,6 +86,16 @@ public class ConstructorView extends View {
             return;
         }
 
+        if (mCurrentPartType == ConstructorPartType.HERO && mHasHero) {
+            mConstructorEventListener.showErrorMessage(R.string.unique_hero);
+            return;
+        }
+
+        if (mCurrentPartType == ConstructorPartType.TREASURE && mHasTreasure) {
+            mConstructorEventListener.showErrorMessage(R.string.unique_treasure);
+            return;
+        }
+
         ConstructorPart newPart = new ConstructorPart(
                 part.getLeft(),
                 part.getTop(),
@@ -100,9 +112,11 @@ public class ConstructorView extends View {
                 newPart.setPartType(ConstructorPartType.WALL, getResources());
                 break;
             case HERO:
+                mHasHero = true;
                 newPart.setPartType(ConstructorPartType.HERO, getResources());
                 break;
             case TREASURE:
+                mHasTreasure = true;
                 newPart.setPartType(ConstructorPartType.TREASURE, getResources());
                 break;
             case MONSTER:
