@@ -30,4 +30,6 @@
     <string name="save_level">Save Level</string>
     <string name="unique_hero">Может быть только один герой!</string>
     <string name="unique_treasure">Может быть только одно сокровище!</string>
+    <string name="play">Играть</string>
+    <string name="create_level">Создать уровень</string>
 </resources>
