@@ -1,0 +1,121 @@
+{
+  "heroPosition": {
+    "rowPosition": 7,
+    "columnPosition": 3
+  },
+  "treasurePosition": {
+    "rowPosition": 0,
+    "columnPosition": 3
+  },
+  "monstersPosition": [],
+  "wallsPosition": [
+    {
+      "rowPosition": 0,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 1,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 2,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 4,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 5,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 6,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 7,
+      "columnPosition": 2
+    },
+    {
+      "rowPosition": 0,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 1,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 2,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 3,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 4,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 5,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 6,
+      "columnPosition": 4
+    },
+    {
+      "rowPosition": 7,
+      "columnPosition": 4
+    }
+  ],
+  "trapConfigs": [
+    {
+      "trapType": 0,
+      "trapPosition": {
+        "rowPosition": 6,
+        "columnPosition": 3
+      }
+    },
+    {
+      "trapType": 2,
+      "trapPosition": {
+        "rowPosition": 5,
+        "columnPosition": 3
+      }
+    },
+    {
+      "trapType": 0,
+      "trapPosition": {
+        "rowPosition": 4,
+        "columnPosition": 3
+      }
+    },
+    {
+      "trapType": 2,
+      "trapPosition": {
+        "rowPosition": 3,
+        "columnPosition": 3
+      }
+    },
+    {
+      "trapType": 0,
+      "trapPosition": {
+        "rowPosition": 2,
+        "columnPosition": 3
+      }
+    },
+    {
+      "trapType": 2,
+      "trapPosition": {
+        "rowPosition": 1,
+        "columnPosition": 3
+      }
+    }
+  ]
+}
