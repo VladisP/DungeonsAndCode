@@ -1,5 +1,7 @@
 package ru.iu9.game.dungeonsandcode.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -24,16 +26,25 @@ import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 
 public class GameActivity extends AppCompatActivity implements HeroMoveListener, DialogEventListener {
 
+    private static final String EXTRA_LEVEL_NUMBER = "ru.iu9.game.dungeonsandcode.level_number";
     private static final String DIALOG_TAG = "EndgameDialog";
 
     private DungeonConfig mDungeonConfig;
+
+    static Intent newIntent(Context packageContext, int levelNumber) {
+        Intent intent = new Intent(packageContext, GameActivity.class);
+        intent.putExtra(EXTRA_LEVEL_NUMBER, levelNumber);
+
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        String json = DncApplication.from(this).getJsonRepo().getJsonByIndex(0);
+        int levelNumber = getIntent().getIntExtra(EXTRA_LEVEL_NUMBER, 0);
+        String json = DncApplication.from(this).getJsonRepo().getJsonByIndex(levelNumber);
         mDungeonConfig = DungeonGenerator.generateConfig(this, json);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

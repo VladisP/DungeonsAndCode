@@ -1,6 +1,7 @@
 package ru.iu9.game.dungeonsandcode.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,15 @@ public class LevelsActivity extends AppCompatActivity {
             mLevelButton = itemView.findViewById(R.id.start_level_button);
         }
 
-        void bind(int levelNumber) {
+        void bind(final int levelNumber) {
             mLevelButton.setText(String.format(Locale.US, "Уровень %d", levelNumber));
+
+            mLevelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startLevel(levelNumber - 1);
+                }
+            });
         }
     }
 
@@ -92,5 +100,10 @@ public class LevelsActivity extends AppCompatActivity {
         for (int i = 1; i <= levelsCount; i++) {
             mLevelListItems.add(i);
         }
+    }
+
+    private void startLevel(int levelNumber) {
+        Intent intent = GameActivity.newIntent(LevelsActivity.this, levelNumber);
+        startActivity(intent);
     }
 }
