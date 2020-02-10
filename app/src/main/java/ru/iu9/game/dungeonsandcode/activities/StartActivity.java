@@ -21,12 +21,23 @@ public class StartActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        findViewById(R.id.open_levels_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLevels();
+            }
+        });
+
         findViewById(R.id.open_constructor_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openConstructor();
             }
         });
+    }
+
+    private void openLevels() {
+        startActivity(new Intent(StartActivity.this, LevelsActivity.class));
     }
 
     private void openConstructor() {

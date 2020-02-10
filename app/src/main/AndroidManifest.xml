@@ -26,6 +26,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.LevelsActivity"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".activities.GameActivity"
             android:screenOrientation="landscape" />
         <activity
