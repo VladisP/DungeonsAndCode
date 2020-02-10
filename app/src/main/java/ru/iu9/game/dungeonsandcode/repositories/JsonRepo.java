@@ -10,8 +10,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-import ru.iu9.game.dungeonsandcode.log.Logger;
-
 public class JsonRepo {
 
     private static final String CONFIG_FOLDER = "dungeon_configs";
@@ -28,6 +26,15 @@ public class JsonRepo {
         return mGson;
     }
 
+    public int getJsonFilesCount() {
+        try {
+            return Objects.requireNonNull(mAssetManager.list(CONFIG_FOLDER)).length;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public String getJsonByIndex(int index) {
         try {
             String fileName = Objects.requireNonNull(mAssetManager.list(CONFIG_FOLDER))[index];
@@ -38,7 +45,6 @@ public class JsonRepo {
             inputStream.close();
             return new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            Logger.log("getJsonByIndex failed!");
             e.printStackTrace();
             return null;
         }
