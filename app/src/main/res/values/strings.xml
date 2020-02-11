@@ -16,4 +16,21 @@
     <string name="trapbottom">trapBottom</string>
     <string name="choose_trap_type">Укажите тип ловушки</string>
     <string name="syntax_error">Программа написана с ошибками!</string>
+    <string name="cell_is_taken">Эта клетка уже занята!</string>
+    <string name="constructor_wall">Стена</string>
+    <string name="constructor_hero">Герой</string>
+    <string name="constructor_treasure">Сокровище</string>
+    <string name="constructor_monster">Скелет</string>
+    <string name="constructor_trap_left">Левая ловушка</string>
+    <string name="constructor_trap_top">Верхняя ловушка</string>
+    <string name="constructor_trap_right">Правая ловушка</string>
+    <string name="constructor_trap_bottom">Нижняя ловушка</string>
+    <string name="remove_last_action">Remove Last Action</string>
+    <string name="reset_constructor">Reset Constructor</string>
+    <string name="save_level">Save Level</string>
+    <string name="unique_hero">Может быть только один герой!</string>
+    <string name="unique_treasure">Может быть только одно сокровище!</string>
+    <string name="play">Играть</string>
+    <string name="create_level">Создать уровень</string>
+    <string name="hero_and_treasure_exists">На поле должны быть герой и сокровище!</string>
 </resources>
