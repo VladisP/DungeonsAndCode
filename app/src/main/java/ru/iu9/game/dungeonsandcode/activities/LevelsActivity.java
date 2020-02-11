@@ -24,6 +24,7 @@ import ru.iu9.game.dungeonsandcode.R;
 public class LevelsActivity extends AppCompatActivity {
 
     private List<Integer> mLevelListItems;
+    private List<Integer> mCustomListItems;
 
     private class LevelHolder extends RecyclerView.ViewHolder {
 
@@ -34,13 +35,13 @@ public class LevelsActivity extends AppCompatActivity {
             mLevelButton = itemView.findViewById(R.id.start_level_button);
         }
 
-        void bind(final int levelNumber) {
+        void bind(final int levelNumber, final boolean isCustom) {
             mLevelButton.setText(String.format(Locale.US, "Уровень %d", levelNumber));
 
             mLevelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startLevel(levelNumber - 1);
+                    startLevel(levelNumber - 1, isCustom);
                 }
             });
         }
@@ -49,7 +50,7 @@ public class LevelsActivity extends AppCompatActivity {
     private class LevelAdapter extends RecyclerView.Adapter<LevelHolder> {
 
         private Context mContext;
-        private List<Integer> mLevelNumbers;
+        List<Integer> mLevelNumbers;
 
         LevelAdapter(Context context, List<Integer> levelNumbers) {
             mContext = context;
@@ -66,8 +67,8 @@ public class LevelsActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull LevelHolder holder, int position) {
-            int levelNumber = mLevelListItems.get(position);
-            holder.bind(levelNumber);
+            int levelNumber = mLevelNumbers.get(position);
+            holder.bind(levelNumber, false);
         }
 
         @Override
@@ -76,21 +77,34 @@ public class LevelsActivity extends AppCompatActivity {
         }
     }
 
+    private class CustomLevelAdapter extends LevelAdapter {
+
+        CustomLevelAdapter(Context context, List<Integer> levelNumbers) {
+            super(context, levelNumbers);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull LevelHolder holder, int position) {
+            int levelNumber = mLevelNumbers.get(position);
+            holder.bind(levelNumber, true);
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
+
         initLevelListItems();
+        initCustomLevelListItems();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        RecyclerView levelList = findViewById(R.id.levels_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
-        levelList.setLayoutManager(layoutManager);
-        levelList.setAdapter(new LevelAdapter(this, mLevelListItems));
+        initLevelList();
+        initCustomLevelList();
     }
 
     private void initLevelListItems() {
@@ -102,8 +116,33 @@ public class LevelsActivity extends AppCompatActivity {
         }
     }
 
-    private void startLevel(int levelNumber) {
-        Intent intent = GameActivity.newIntent(LevelsActivity.this, levelNumber);
+    private void initCustomLevelListItems() {
+        mCustomListItems = new ArrayList<>();
+        int customLevelsCount = DncApplication.from(this).getJsonRepo().getCustomJsonFilesCount();
+
+        for (int i = 1; i <= customLevelsCount; i++) {
+            mCustomListItems.add(i);
+        }
+    }
+
+    private void initLevelList() {
+        RecyclerView levelList = findViewById(R.id.levels_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        levelList.setLayoutManager(layoutManager);
+        levelList.setAdapter(new LevelAdapter(this, mLevelListItems));
+    }
+
+    private void initCustomLevelList() {
+        RecyclerView customLevelList = findViewById(R.id.custom_levels_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        customLevelList.setLayoutManager(layoutManager);
+        customLevelList.setAdapter(new CustomLevelAdapter(this, mCustomListItems));
+    }
+
+    private void startLevel(int levelNumber, boolean isCustom) {
+        Intent intent = GameActivity.newIntent(LevelsActivity.this, levelNumber, isCustom);
         startActivity(intent);
     }
 }

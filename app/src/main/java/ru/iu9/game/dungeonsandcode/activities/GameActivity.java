@@ -18,6 +18,7 @@ import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
 import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.dialog.EndgameFragment;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.DialogEventListener;
+import ru.iu9.game.dungeonsandcode.repositories.JsonRepo;
 
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.HeroMoveListener;
 import static ru.iu9.game.dungeonsandcode.code.CodeFragment.newInstance;
@@ -27,13 +28,15 @@ import static ru.iu9.game.dungeonsandcode.dungeon.DungeonView.MoveAction;
 public class GameActivity extends AppCompatActivity implements HeroMoveListener, DialogEventListener {
 
     private static final String EXTRA_LEVEL_NUMBER = "ru.iu9.game.dungeonsandcode.level_number";
+    private static final String EXTRA_IS_CUSTOM = "ru.iu9.game.dungeonsandcode.is_custom";
     private static final String DIALOG_TAG = "EndgameDialog";
 
     private DungeonConfig mDungeonConfig;
 
-    static Intent newIntent(Context packageContext, int levelNumber) {
+    static Intent newIntent(Context packageContext, int levelNumber, boolean isCustom) {
         Intent intent = new Intent(packageContext, GameActivity.class);
         intent.putExtra(EXTRA_LEVEL_NUMBER, levelNumber);
+        intent.putExtra(EXTRA_IS_CUSTOM, isCustom);
 
         return intent;
     }
@@ -44,7 +47,10 @@ public class GameActivity extends AppCompatActivity implements HeroMoveListener,
         setContentView(R.layout.activity_game);
 
         int levelNumber = getIntent().getIntExtra(EXTRA_LEVEL_NUMBER, 0);
-        String json = DncApplication.from(this).getJsonRepo().getJsonByIndex(levelNumber);
+        boolean isCustom = getIntent().getBooleanExtra(EXTRA_IS_CUSTOM, false);
+        JsonRepo jsonRepo = DncApplication.from(this).getJsonRepo();
+
+        String json = isCustom ? jsonRepo.getCustomJsonByIndex(levelNumber) : jsonRepo.getJsonByIndex(levelNumber);
         mDungeonConfig = DungeonGenerator.generateConfig(this, json);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
