@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000</color>
     <color name="colorGray">#212121</color>
+    <color name="colorLightGray">#424242</color>
     <color name="colorRed">#D50000</color>
     <color name="colorLineNumber">#00D5D5</color>
 </resources>

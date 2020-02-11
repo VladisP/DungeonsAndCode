@@ -34,4 +34,6 @@
     <string name="create_level">Создать уровень</string>
     <string name="hero_and_treasure_exists">На поле должны быть герой и сокровище!</string>
     <string name="start_background">start background</string>
+    <string name="levels">Уровни</string>
+    <string name="custom_levels">Пользовательские уровни</string>
 </resources>
