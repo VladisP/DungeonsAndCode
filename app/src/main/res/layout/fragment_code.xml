@@ -69,7 +69,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorCode" />
+            android:background="@color/colorRed" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorCode" />
+            android:background="@color/colorRed" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/code_list"

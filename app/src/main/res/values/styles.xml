@@ -12,8 +12,8 @@
     </style>
 
     <style name="ConstructorRadioButton" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlNormal">@color/colorCode</item>
-        <item name="colorControlActivated">@color/colorCode</item>
+        <item name="colorControlNormal">@color/colorRed</item>
+        <item name="colorControlActivated">@color/colorRed</item>
     </style>
 
 </resources>

@@ -33,4 +33,5 @@
     <string name="play">Играть</string>
     <string name="create_level">Создать уровень</string>
     <string name="hero_and_treasure_exists">На поле должны быть герой и сокровище!</string>
+    <string name="start_background">start background</string>
 </resources>
