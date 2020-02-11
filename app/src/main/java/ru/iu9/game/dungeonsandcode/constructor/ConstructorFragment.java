@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
+import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 
 public class ConstructorFragment extends Fragment {
 
@@ -44,5 +45,9 @@ public class ConstructorFragment extends Fragment {
 
     public void removeAll() {
         mConstructorView.removeAll();
+    }
+
+    public DungeonConfig getDungeonConfig() {
+        return mConstructorView.getDungeonConfig();
     }
 }

@@ -17,6 +17,8 @@ import ru.iu9.game.dungeonsandcode.R;
 import ru.iu9.game.dungeonsandcode.constructor.entities.ConstructorPart;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorEventListener;
 import ru.iu9.game.dungeonsandcode.constructor.helpers.ConstructorPartType;
+import ru.iu9.game.dungeonsandcode.dungeon.DungeonGenerator;
+import ru.iu9.game.dungeonsandcode.dungeon.config.DungeonConfig;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.Trap;
 import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.PositionPair;
 
@@ -201,6 +203,10 @@ public class ConstructorView extends View {
         while (!mHistoryStack.empty()) {
             removeLastAddedPart();
         }
+    }
+
+    DungeonConfig getDungeonConfig() {
+        return mHasHero && mHasTreasure ? DungeonGenerator.generateConfig(mParts) : null;
     }
 
     private Bitmap createBackgroundImage(int width, int height) {

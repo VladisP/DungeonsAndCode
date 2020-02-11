@@ -7,5 +7,7 @@ public interface ConstructorEventListener {
 
     void removeAll();
 
+    void saveLevel();
+
     void showErrorMessage(int msgId);
 }

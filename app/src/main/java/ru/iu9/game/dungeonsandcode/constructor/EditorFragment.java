@@ -81,6 +81,13 @@ public class EditorFragment extends Fragment {
                 mConstructorEventListener.removeAll();
             }
         });
+
+        view.findViewById(R.id.save_level_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConstructorEventListener.saveLevel();
+            }
+        });
     }
 
     @Override

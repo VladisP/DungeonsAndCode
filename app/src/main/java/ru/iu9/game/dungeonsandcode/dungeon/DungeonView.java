@@ -25,7 +25,7 @@ import ru.iu9.game.dungeonsandcode.dungeon.entities.helper_entities.TrapType;
 public class DungeonView extends View {
 
     private static final int PADDING_MIN_SIZE = 24;
-    private static final int FLOORS_ROW_COUNT = 8;
+    static final int FLOORS_ROW_COUNT = 8;
 
     private DialogEventListener mDialogEventListener;
     private DungeonConfig mDungeonConfig;
@@ -94,7 +94,7 @@ public class DungeonView extends View {
 
         Floor[][] floors = new Floor[FLOORS_ROW_COUNT][FLOORS_ROW_COUNT];
 
-        boolean[][] isWalls = DungeonGenerator.generateWallsMap(mDungeonConfig, FLOORS_ROW_COUNT);
+        boolean[][] isWalls = DungeonGenerator.generateWallsMap(mDungeonConfig);
 
         for (int i = 0; i < FLOORS_ROW_COUNT; i++) {
             for (int j = 0; j < FLOORS_ROW_COUNT; j++) {
