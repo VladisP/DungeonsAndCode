@@ -70,7 +70,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorRed" />
+            android:background="@color/colorAccent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorRed" />
+            android:background="@color/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/code_list"
@@ -140,7 +140,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorRed" />
+            android:background="@color/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/command_list"

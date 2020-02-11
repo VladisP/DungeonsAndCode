@@ -27,14 +27,14 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/levels"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/colorAccent"
                 android:textSize="24sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/colorRed" />
+                android:background="@color/colorAccent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/levels_list"
@@ -65,14 +65,14 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/custom_levels"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/colorAccent"
                 android:textSize="24sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/colorRed" />
+                android:background="@color/colorAccent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/custom_levels_list"
